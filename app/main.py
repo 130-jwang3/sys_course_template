@@ -31,11 +31,11 @@ firebase = firebase_admin.initialize_app()
 
 # Enable Google Cloud Debugger
 # See https://cloud.google.com/debugger/docs/setup/python for more information.
-try:
-    import googleclouddebugger
-    googleclouddebugger.enable()
-except ImportError:
-    pass
+# try:
+#     import googleclouddebugger
+#     googleclouddebugger.enable()
+# except ImportError:
+#     pass
 
 
 app = Flask(__name__)

@@ -18,9 +18,14 @@
             <p class="subtitle is-6">{{ product.description }}</p>
             <p class="subtitle is-4">${{ product.price }}</p>
             <p>
-              {% for label in product.labels[:3] %}
-              <span class="tag is-light is-medium">{{ label }}</span>
-              {% endfor %}
+              {% if product.labels %}
+                {% for label in product.labels[:3] %}
+                <span class="tag is-light is-medium">{{ label }}</span>
+                {% endfor %}
+              {% else %}
+                <!-- Handle the case where product.labels is None or empty -->
+                No labels available
+              {% endif %}              
             </p>
           </div>
           <div class="card-footer">

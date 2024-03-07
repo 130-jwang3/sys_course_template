@@ -16,7 +16,7 @@
 
 const addToCartURL = `/cart`;
 const deleteFromCartURL = `/cart`;
-var provider = new firebase.auth.GoogleAuthProvider();
+// var provider = new firebase.auth.GoogleAuthProvider();
 
 async function addToCartRequest(id, update, restore) {
   try {

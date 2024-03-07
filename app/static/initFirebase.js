@@ -15,13 +15,25 @@
 // Script for configuring Firebase.
 // See https://firebase.google.com/docs/web/setup for more information.
 
-var config = {
-    apiKey: "YOUR-API-KEY",
-    authDomain: "YOUR-AUTH-DOMAIN",
-    databaseURL: "YOUR-DATABASE-URL",
-    projectId: "YOUR-PROJECT-ID",
-    storageBucket: "YOUR-STORAGE-BUCKET",
-    messagingSenderId: "YOUR-MESSAGING-SENDER-ID"
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: "AIzaSyB7t8RljDgCzF9b1V0oiRMEdsfqUza-6rM",
+    authDomain: "sys-course-416420.firebaseapp.com",
+    databaseURL: "https://sys-course-416420-default-rtdb.firebaseio.com",
+    projectId: "sys-course-416420",
+    storageBucket: "sys-course-416420.appspot.com",
+    messagingSenderId: "861249658080",
+    appId: "1:861249658080:web:aa889f9533a1a5952ec485",
+    measurementId: "G-G7VQFVP15B"
 };
 
-firebase.initializeApp(config);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+export { app };
