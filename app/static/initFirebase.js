@@ -23,7 +23,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebas
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyB7t8RljDgCzF9b1V0oiRMEdsfqUza-6rM",
+    apiKey: "AIzaSyAg1TaA1UF9IFRhx1vNpdzNnoIcN70K1gk",
     authDomain: "sys-course-416420.firebaseapp.com",
     databaseURL: "https://sys-course-416420-default-rtdb.firebaseio.com",
     projectId: "sys-course-416420",

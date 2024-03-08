@@ -15,12 +15,10 @@
 // Script for configuring Firebase Authentication (Sign In/Out with Google).
 // See https://firebase.google.com/docs/auth/web/google-signin for more information.
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { app } from "./initFirebase.js";
 import { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-import { firebaseConfig } from './firebaseConfig.js'; // Assuming firebaseConfig is exported from this file.
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
@@ -44,6 +42,9 @@ getRedirectResult(auth).then((result) => {
       document.cookie = `firebase_id_token=${firebaseIdToken};path=/;`;
       setTimeout(() => { window.location.replace("/"); }, 1500);
     });
+  } else {
+    document.getElementById("message_body").innerText = "Now redirecting you to Google."
+    setTimeout(function () { signInWithGoogle(); }, 1500);
   }
 }).catch((error) => {
   console.log(error);
