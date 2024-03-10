@@ -13,11 +13,5 @@
 # limitations under the License.
 
 
-# from .cart import cart_page
-# from .charge import charge_page
-# from .checkout import checkout_page
-# from .product_catalog import product_catalog_page
-# from .sell import sell_page
-from .signin import signin_page
-from .course import course_page
-from .resource import resource_page
+from .helpers import *
+from .data_classes import Resource
