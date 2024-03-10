@@ -13,9 +13,5 @@
 # limitations under the License.
 
 
-runtime: nodejs20
-service: stream-events
-
-env_variables:
-  BIGQUERY_DATASET: YOUR-DATASET
-  BIGQUERY_TABLE: YOUR-TABLE
+from .helpers import *
+from .data_classes import Resource
