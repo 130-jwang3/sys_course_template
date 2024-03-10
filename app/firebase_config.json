@@ -1,10 +1,10 @@
 {
-    "apiKey": "AIzaSyAg1TaA1UF9IFRhx1vNpdzNnoIcN70K1gk",
-    "authDomain": "sys-course-416420.firebaseapp.com",
-    "databaseURL": "https://sys-course-416420-default-rtdb.firebaseio.com",
-    "projectId": "sys-course-416420",
-    "storageBucket": "sys-course-416420.appspot.com",
-    "messagingSenderId": "861249658080",
-    "appId": "1:861249658080:web:aa889f9533a1a5952ec485",
-    "measurementId": "G-G7VQFVP15B"
+    "apiKey": "AIzaSyA0NufVO3H5QMk0PS1zpzRWqic93_2YsEU",
+    "authDomain": "project-syscourse.firebaseapp.com",
+    "databaseURL": "https://project-syscourse-default-rtdb.firebaseio.com",
+    "projectId": "project-syscourse",
+    "storageBucket": "project-syscourse.appspot.com",
+    "messagingSenderId": "131114168104",
+    "appId": "1:131114168104:web:057d30fc64cc3fe9e32a1d",
+    "measurementId": "G-T1WM8E7FSG"
 }
