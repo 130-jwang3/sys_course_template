@@ -25,14 +25,17 @@ from flask import Blueprint, redirect, render_template, url_for
 
 from helpers import eventing, product_catalog, resources, courses
 from middlewares.auth import auth_required
-from middlewares.form_validation import ResourceUploadForm, resource_form_validation_required
+from middlewares.form_validation import (
+    ResourceUploadForm,
+    resource_form_validation_required,
+)
 
-PUBSUB_TOPIC_NEW_RESOURCE = os.environ.get('PUBSUB_TOPIC_NEW_RESOURCE')
+PUBSUB_TOPIC_NEW_RESOURCE = os.environ.get("PUBSUB_TOPIC_NEW_RESOURCE")
 
-upload_resource_page = Blueprint('upload_resource_page', __name__)
+upload_resource_page = Blueprint("upload_resource_page", __name__)
 
 
-@upload_resource_page.route('/upload_resource', methods=['GET'])
+@upload_resource_page.route("/upload_resource", methods=["GET"])
 @auth_required
 def display(auth_context):
     """
@@ -48,12 +51,14 @@ def display(auth_context):
     # Prepares the sell form.
     # See middlewares/form_validation.py for more information.
     form = ResourceUploadForm()
-    form.course_id.choices = [(course.course_id, course.title) for course in courses.list_course()]
+    form.course_id.choices = [
+        (course.course_id, course.title) for course in courses.list_course()
+    ]
     # courses_item = courses.list_course()
-    return render_template('upload_resource.html', auth_context=auth_context, form=form)
+    return render_template("upload_resource.html", auth_context=auth_context, form=form)
 
 
-@upload_resource_page.route('/upload_resource', methods=['POST'])
+@upload_resource_page.route("/upload_resource", methods=["POST"])
 @auth_required
 @resource_form_validation_required
 def process(auth_context, form):
@@ -69,18 +74,21 @@ def process(auth_context, form):
     Output:
        Rendered HTML page.
     """
-    form.course_id.choices = [(course.course_id, course.title) for course in courses.list_course()]
-    
+    form.course_id.choices = [
+        (course.course_id, course.title) for course in courses.list_course()
+    ]
+
     upload_resource = resources.Resource(
-        title = form.title.data,
+        title=form.title.data,
         description=form.description.data,
         # url=form.resourceFile.data.filename,
         url="resource_1",
         # type=form.resourceFile.data.content_type,
         type="png",
         uid=auth_context.get("uid"),
-        course_id=form.course_id.data)
-        
+        course_id=form.course_id.data,
+    )
+
     resource_id = resources.add_resource(upload_resource)
     # product_id = product_catalog.add_product(upload_resource)
     # Publish an event to the topic for new products.
@@ -89,12 +97,10 @@ def process(auth_context, form):
     # Cloud Function streamEvents (or App Engine service stream-event)
     # subscribes to the topic and saves the event to BigQuery for
     # data analytics upon arrival of new events.
-    # eventing.stream_event(
-    #     topic_name=PUBSUB_TOPIC_NEW_RESOURCE,
-    #     event_type='label_detection',
-    #     event_context={
-    #         'resource_id': resource_id,
-    #         'resource_url': upload_resource.url
-    #     })
+    eventing.stream_event(
+        topic_name=PUBSUB_TOPIC_NEW_RESOURCE,
+        event_type="label_detection",
+        event_context={"resource_id": resource_id, "resource_url": upload_resource.url},
+    )
 
-    return redirect(url_for('course_page.display'))
+    return redirect(url_for("course_page.display"))

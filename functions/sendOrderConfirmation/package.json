@@ -4,7 +4,7 @@
   "engines": {
     "node": ">8.0.0"
   },
-  "description": "Cloud Function for sending emails in the Sys Course.",
+  "description": "Cloud Function for sending emails in the Serverless Store.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

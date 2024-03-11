@@ -1,5 +1,5 @@
-{% comment %} {% extends "base.html" %}
-{% block title %}Sys Course: Checkout{% endblock %}
+{% extends "base.html" %}
+{% block title %}Serverless Store: Checkout{% endblock %}
 {% block head_extension %}
   <link rel="stylesheet" href="/static/stripe.css">
 {% endblock %}
@@ -28,4 +28,4 @@
   </form>
   {% include "parts/checkout_shipping_form.html" %}
   {% include "parts/checkout_payment_form.html" %}
-{% endblock %} {% endcomment %}
+{% endblock %}
