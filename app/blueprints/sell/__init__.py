@@ -13,4 +13,4 @@
 # limitations under the License.
 
 
-from .blueprint import sell_page
+from .blueprint import upload_resource_page
