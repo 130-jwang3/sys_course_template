@@ -21,18 +21,31 @@
 from functools import wraps
 
 from flask_wtf import FlaskForm
-from wtforms import FieldList, FloatField, StringField
+from wtforms import FieldList, FloatField, StringField, SelectField, TextAreaField, FileField
 from wtforms.validators import DataRequired, Optional
+from flask_wtf.file import FileAllowed
+from helpers import courses
 
-
-class SellForm(FlaskForm):
+# class SellForm(FlaskForm):
+#     """
+#     FlaskForm for selling items.
+#     """
+#     name = StringField('name', validators=[DataRequired()])
+#     description = StringField('description', validators=[DataRequired()])
+#     price = FloatField('price', validators=[DataRequired()])
+#     image = StringField('image', validators=[DataRequired()])
+class ResourceUploadForm(FlaskForm):
     """
-    FlaskForm for selling items.
+    FlaskForm for uploading resources.
     """
-    name = StringField('name', validators=[DataRequired()])
-    description = StringField('description', validators=[DataRequired()])
-    price = FloatField('price', validators=[DataRequired()])
-    image = StringField('image', validators=[DataRequired()])
+    title = StringField('Title', validators=[DataRequired(message="The title is required.")])
+    description = TextAreaField('Description', validators=[DataRequired(message="A description is required.")])
+    # Assuming you have a function to get the list of courses for the SelectField choices
+    course_id = SelectField('Course', coerce=str, validators=[DataRequired(message="You must select a course.")])
+    # resourceFile = FileField('File', validators=[
+    #     DataRequired(message="A file upload is required."),
+    #     FileAllowed(['png', 'pdf'], message="The file type is not allowed.")
+    # ])
 
 
 class CheckOutForm(FlaskForm):
@@ -50,24 +63,18 @@ class CheckOutForm(FlaskForm):
     stripeToken = StringField('stripeToken', validators=[DataRequired()])
 
 
-def sell_form_validation_required(f):
-    """
-    A decorator for validating requests with the sell form.
-    Returns an error message if validation fails.
-
-    Parameters:
-       f (func): The view function to decorate.
-
-    Output:
-       decorated (func): The decorated function.
-    """
+def resource_form_validation_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        sell_form = SellForm()
-        if not sell_form.validate():
+        resource_upload_form = ResourceUploadForm()
+
+        resource_upload_form.course_id.choices = [(course.course_id, course.title) for course in courses.list_course()]
+
+        if not resource_upload_form.validate():
+            # Handling for validation failure
             return 'Something does not look right. Check your input and try again.', 400
 
-        return f(form=sell_form, *args, **kwargs)
+        return f(form=resource_upload_form,*args, **kwargs)
     return decorated
 
 

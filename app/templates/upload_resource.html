@@ -33,8 +33,8 @@
         <div class="control has-icons-left">
           <div class="select is-fullwidth">
             <select name="course_id">
-              {% for course in courses %}
-                <option value="{{ course.course_id }}">{{ course.title }}</option>
+              {% for choice in form.course_id.choices %}
+                <option value="{{ choice[0] }}">{{ choice[1] }}</option>
               {% endfor %}
             </select>
           </div>

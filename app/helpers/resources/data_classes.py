@@ -28,7 +28,7 @@ class Resource:
     Data class for courses.
     """
 
-    resource_id: str
+    
     course_id: str
     title: str
     type: str
@@ -39,6 +39,7 @@ class Resource:
     uid: str
     duration: Optional[int] = None
     document_id: str = None
+    resource_id: str = None
 
     @staticmethod
     def deserialize(document):
