@@ -1,100 +1,44 @@
 {% extends "base.html" %}
-{% block title %}Sys Course: Upload Resources{% endblock %}
+{% block title %}Serverless Store: Checkout{% endblock %}
 {% block head_extension %}
   <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
   <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
-  <link href="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.css" rel="stylesheet">
-  <style>
-    .container {
-      max-width: 800px; /* Set a max-width for the container for a more centralized look */
-      margin: auto;
-    }
-    #file-info {
-      text-align: center;
-    }
-  </style>
 {% endblock %}
 {% block content %}
   <section class="hero is-medium">
     <div class="hero-body">
-      <div class="container has-text-centered">
-        <h1 class="title">Upload Your Course Resources</h1>
+      <div class="container">
+        <h1 class="title">Join the marketplace</h1>
         <h2 class="subtitle">
-          You can upload images or PDF documents. Fill in the details and submit.
+          It's easy to make a listing. Add an image and some description, we'll handle the rest for you.
         </h2>
       </div>
     </div>
   </section>
-  <div class="container">
-    <form id="resource-upload-form" action="/upload_resource" method="POST" enctype="multipart/form-data">
-      {{ form.csrf_token }}
-      <div class="field">
-        <label class="label">Course</label>
-        <div class="control has-icons-left">
-          <div class="select is-fullwidth">
-            <select name="course_id">
-              {% for course in courses %}
-                <option value="{{ course.course_id }}">{{ course.title }}</option>
-              {% endfor %}
-            </select>
+  <form id="sell-form" action="/sell" method="POST">
+    {{ form.csrf_token }}
+    <input id="image" name="image" type="hidden" value="">
+    <input id="name" name="name" type="hidden" value="">
+    <input id="description" name="description" type="hidden" value="">
+    <input id="price" name="price" type="hidden" value="">
+  </form>
+  <section class="section is-paddingless">
+    <div class="container">
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <div><span class="icon is-medium has-text-danger"><i class="fas fa-lg fa-camera-retro"></i></span></div>
           </div>
-          <span class="icon is-small is-left">
-            <i class="fas fa-book"></i>
-          </span>
+          <div class="level-item">
+            <div>
+              <p class="subtitle">A picture is worth a thousand words. So they say.</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="field">
-        <label class="label">Title</label>
-        <div class="control">
-          <input class="input" type="text" name="title" placeholder="Resource title">
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Description</label>
-        <div class="control">
-          <textarea class="textarea" name="description" placeholder="Resource description"></textarea>
-        </div>
-      </div>
-      <!-- FilePond input for file upload -->
-      <input type="file" class="filepond" name="resourceFile" accept="image/png, image/jpeg, application/pdf">
-      <!-- Display file name and type after upload -->
-      <div id="file-info">
-        <p>File Name: <span id="file-name"></span></p>
-        <p>File Type: <span id="file-type"></span></p>
-      </div>
-      <div class="field">
-        <div class="control">
-          <button class="button is-link" type="submit">Submit</button>
-        </div>
-      </div>
-    </form>
-  </div>
-  <!-- Include your FilePond and other JS at the bottom of the page -->
-  <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
-  <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-  <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
-  <script>
-    // Initialize FilePond
-  FilePond.registerPlugin(
-    FilePondPluginImagePreview,
-    FilePondPluginFileValidateType
-  );
-
-  const pond = FilePond.create(document.querySelector('.filepond'), {
-    acceptedFileTypes: ['image/png', 'image/jpeg', 'application/pdf']
-  });
-
-  // Listen for FilePond's addfile event and update file name and type
-  pond.on('addfile', (error, file) => {
-    if (error) {
-      console.error('File could not be added:', error);
-      return;
-    }
-
-    // Update the UI with the file name and type
-    document.getElementById('file-name').textContent = file.filename;
-    // Extract and set the file type, removing the "application/" prefix
-    document.getElementById('file-type').textContent = file.fileType ? file.fileType.split('/')[1] : '';
-  });
-  </script>
+    </div>
+  </section>
+  {% include "parts/sell_image_uploader.html" %}
+  <br>
+  {% include "parts/sell_info_form.html" %}
 {% endblock %}

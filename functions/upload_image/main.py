@@ -27,8 +27,7 @@ from wand.image import Image
 client = storage.Client()
 
 BUCKET = os.environ.get('GCS_BUCKET')
-IMAGE_FILENAME_TEMPLATE = '{}.png'
-PDF_FILENAME_TEMPLATE = '{}.pdf'
+FILENAME_TEMPLATE = '{}.png'
 EXPECTED_WIDTH = 640
 EXPECTED_HEIGHT = 640
 
@@ -55,30 +54,24 @@ def upload_image(request):
     if not file:
         return ("File is not found in the request.", 400, headers)
 
-    file_content = file.read()
-    content_type = file.content_type
-    id = uuid.uuid4().hex
+    data = file.read()
 
-    if content_type.startswith('image/'):
-        with Image(blob=file_content) as image:
-            image.transform(resize="{}x{}>".format(EXPECTED_WIDTH, EXPECTED_HEIGHT))
-            image.extent(
-                width=EXPECTED_WIDTH,
-                height=EXPECTED_HEIGHT,
-                x=int((EXPECTED_WIDTH - image.width) / 2),
-                y=-int((EXPECTED_HEIGHT - image.height) / 2)            
-            )
-            converted_content = image.make_blob(format='png')
-        filename = IMAGE_FILENAME_TEMPLATE.format(id)
-    elif content_type == 'application/pdf':
-        converted_content = file_content
-        filename = PDF_FILENAME_TEMPLATE.format(id)
-    else:
-        return ("Unsupported file type.", 400, headers)
+    with Image(blob=data) as image:
+        image.transform(resize="{}x{}>".format(EXPECTED_WIDTH, EXPECTED_HEIGHT))
+        image.extent(
+            width=EXPECTED_WIDTH,
+            height=EXPECTED_HEIGHT,
+            x=int((EXPECTED_WIDTH - image.width) / 2),
+            y=-int((EXPECTED_HEIGHT - image.height) / 2)            
+        )
+        converted_image = image.make_blob(format='png')
     
+    id = uuid.uuid4().hex
+    filename = FILENAME_TEMPLATE.format(id)
 
     bucket = client.get_bucket(BUCKET)
     blob = bucket.blob(filename)
-    blob.upload_from_string(converted_content, content_type=content_type)
+
+    blob.upload_from_string(converted_image, content_type='image/png')
 
     return (id, 200, headers)
