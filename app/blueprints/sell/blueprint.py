@@ -29,10 +29,10 @@ from middlewares.form_validation import SellForm, sell_form_validation_required
 
 PUBSUB_TOPIC_NEW_PRODUCT = os.environ.get('PUBSUB_TOPIC_NEW_PRODUCT')
 
-sell_page = Blueprint('sell_page', __name__)
+upload_resource_page = Blueprint('upload_resource_page', __name__)
 
 
-@sell_page.route('/sell', methods=['GET'])
+@upload_resource_page.route('/upload_resource', methods=['GET'])
 @auth_required
 def display(auth_context):
     """
@@ -51,7 +51,7 @@ def display(auth_context):
     return render_template('sell.html', auth_context=auth_context, form=form)
 
 
-@sell_page.route('/sell', methods=['POST'])
+@upload_resource_page.route('/upload_resource', methods=['POST'])
 @auth_required
 @sell_form_validation_required
 def process(auth_context, form):
