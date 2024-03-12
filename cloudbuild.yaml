@@ -48,3 +48,6 @@ steps:
 # images.
 - name: 'gcr.io/cloud-builders/gcloud'
   args: ['functions', 'deploy', 'upload_image', '--source=./functions/upload_image/', '--runtime=python37', '--trigger-http', '--env-vars-file=./extras/cloudbuild/functions_env_vars.yaml']
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['functions', 'deploy', 'sendEmail', '--source=./functions/email_with_sendgrid/', '--runtime=nodejs16', '--trigger-topic=notification', '--env-vars-file=./extras/cloudbuild/functions_env_vars.yaml']

@@ -19,6 +19,7 @@ env_variables:
   GCP_PROJECT: "sys-course"
   PUBSUB_TOPIC_NEW_PRODUCT: "new-product"
   PUBSUB_TOPIC_PAYMENT_PROCESS: "payment-process"
+  PUBSUB_TOPIC_NOTIFICATION: "notification"
   GCS_BUCKET: "syscourse-educational-image"
   FIREBASE_CONFIG: "firebase_config.json"
 
