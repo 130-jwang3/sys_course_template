@@ -14,7 +14,7 @@
 
 
 """
-A collection of helper functions for cart related operations.
+A collection of helper functions for courses related operations.
 """
 
 
@@ -73,8 +73,11 @@ def list_course():
     """
     courses = firestore_client.collection("courses").order_by("ratingsAverage").get()
     course_list = [Course.deserialize(course) for course in list(courses)]
-    course_list.sort(key=lambda x: (x.ratingsAverage, x.ratingsCount))
+   #  course_list.sort(key=lambda x: (x.ratingsAverage, x.ratingsCount))
+    course_list.sort(key=lambda x: (float(x.ratingsAverage) if x.ratingsAverage is not None else 0, 
+                                int(x.ratingsCount) if x.ratingsCount is not None else 0))
     return course_list
+
 
 def remove_course(uid, course_id):
     """

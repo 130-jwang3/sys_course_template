@@ -28,7 +28,7 @@ class Course:
     Data class for courses.
     """
 
-    course_id: str
+    # course_id: str
     title: str
     description: str
     instructor: str
@@ -42,6 +42,7 @@ class Course:
     ratingsAverage: Optional[float] = None
     ratingsCount: Optional[int] = None
     document_id: str = None
+    course_id: str = None
 
     @staticmethod
     def deserialize(document):
