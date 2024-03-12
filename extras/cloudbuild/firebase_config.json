@@ -1,9 +1,10 @@
 {
-    "apiKey": "",
-    "authDomain": "",
-    "databaseURL": "",
-    "projectId": "",
-    "storageBucket": "",
-    "messagingSenderId": "",
-    "appId": ""
+    "apiKey": "AIzaSyA0NufVO3H5QMk0PS1zpzRWqic93_2YsEU",
+    "authDomain": "project-syscourse.firebaseapp.com",
+    "databaseURL": "https://project-syscourse-default-rtdb.firebaseio.com",
+    "projectId": "project-syscourse",
+    "storageBucket": "project-syscourse.appspot.com",
+    "messagingSenderId": "131114168104",
+    "appId": "1:131114168104:web:057d30fc64cc3fe9e32a1d",
+    "measurementId": "G-T1WM8E7FSG"
 }

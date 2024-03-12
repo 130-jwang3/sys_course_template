@@ -13,9 +13,4 @@
 # limitations under the License.
 
 
-runtime: nodejs20
-service: stream-events
-
-env_variables:
-  BIGQUERY_DATASET: sample_data
-  BIGQUERY_TABLE: sample_table
+from .blueprint import course_page
