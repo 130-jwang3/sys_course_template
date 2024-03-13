@@ -1,0 +1,83 @@
+# Copyright 2018 Google LLC.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+"""
+This module is the Flask blueprint for the add course page (/add_course).
+"""
+
+
+import os
+import random
+
+from flask import Blueprint, redirect, render_template, url_for
+
+from helpers import resources, courses
+from middlewares.auth import auth_required
+from middlewares.form_validation import AddCourseForm, course_form_validation_required
+
+add_course_page = Blueprint('add_course_page', __name__)
+
+@add_course_page.route('/add_course', methods=['GET'])
+@auth_required
+def display(auth_context):
+    """
+    View function for displaying the add_course page.
+
+    Parameters:
+       auth_context (dict): The authentication context of request.
+                            See middlewares/auth.py for more information.
+    Output:
+       Rendered HTML page.
+    """
+
+    # Prepares the add_course form.
+    # See middlewares/form_validation.py for more information.
+    form = AddCourseForm()
+    return render_template('add_course.html', auth_context=auth_context, form=form)
+
+
+@add_course_page.route('/add_course', methods=['POST'])
+@auth_required
+@course_form_validation_required
+def process(auth_context, form):
+    """
+    View function for processing add_course requests.
+
+    Parameters:
+       auth_context (dict): The authentication context of request.
+                            See middlewares/auth.py for more information.
+       form (AddCourseForm): A validated add_course form.
+                             See middlewares/form_validation.py for more
+                             information.
+    Output:
+       Rendered HTML page.
+    """
+    
+    new_course = courses.Course(
+        title=form.title.data,
+        description=form.description.data,
+        instructor=form.instructor.data,
+        field=form.field.data,
+        level=form.level.data, 
+        language=form.language.data,
+        thumbnailUrl="course",  
+        uid=auth_context.get("uid"),
+        ratingsAverage="{:.1f}".format(random.uniform(1, 4.9)),
+        ratingsCount=str(random.randint(1, 1000))
+    )
+        
+    course_id = courses.add_course(new_course)
+
+    return redirect(url_for('course_page.display'))

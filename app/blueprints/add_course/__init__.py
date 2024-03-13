@@ -13,23 +13,4 @@
 # limitations under the License.
 
 
-runtime: python39
-
-
-env_variables:
-  GCP_PROJECT: "YOUR-PROJECT"
-  GCP_PROJECT_ID: "YOUR-PROJECT-ID"
-  PUBSUB_TOPIC_NEW_PRODUCT: "YOUR-NEW-PRODUCT-TOPIC"
-  PUBSUB_TOPIC_PAYMENT_PROCESS: "YOUR-PAYMENT-TOPIC"
-  GCS_BUCKET: "YOUR-GCS-BUCKET"
-  FIREBASE_CONFIG: "firebase_config.json"
-
-
-handlers:
-  - url: /static
-    static_dir: static
- 
-  - url: /.*
-    script: auto
-    secure: always
-    redirect_http_response_code: 301
+from .blueprint import add_course_page

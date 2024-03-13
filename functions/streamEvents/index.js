@@ -33,7 +33,7 @@ exports.streamEvents = async (req, res) => {
         await table.insert({
             eventType: message.event_type,
             createdTime: message.created_time,
-            context: JSON.stringify(mesage.event_context)
+            context: JSON.stringify(message.event_context)
         })
     } catch (error) {
         console.log(error);

@@ -17,7 +17,10 @@
 # from .charge import charge_page
 # from .checkout import checkout_page
 # from .product_catalog import product_catalog_page
-from .sell import upload_resource_page
+from .add_course import add_course_page
+from .upload_resourse import upload_resource_page
 from .signin import signin_page
 from .course import course_page
 from .resource import resource_page
+from .allresource import all_resource_page
+from .get_course import all_course_page

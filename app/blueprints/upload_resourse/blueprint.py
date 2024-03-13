@@ -23,18 +23,15 @@ import time
 
 from flask import Blueprint, redirect, render_template, url_for
 
-from helpers import eventing, product_catalog, resources, courses
+from helpers import resources, courses, eventing
 from middlewares.auth import auth_required
 from middlewares.form_validation import (
     ResourceUploadForm,
     resource_form_validation_required,
 )
 
-<<<<<<< HEAD
-PUBSUB_TOPIC_NEW_PRODUCT = os.environ.get('PUBSUB_TOPIC_NEW_PRODUCT')
-=======
-PUBSUB_TOPIC_NEW_RESOURCE = os.environ.get("PUBSUB_TOPIC_NEW_RESOURCE")
->>>>>>> master
+PUBSUB_TOPIC_NEW_PRODUCT = os.environ.get("PUBSUB_TOPIC_NEW_PRODUCT")
+
 
 upload_resource_page = Blueprint("upload_resource_page", __name__)
 
@@ -43,7 +40,7 @@ upload_resource_page = Blueprint("upload_resource_page", __name__)
 @auth_required
 def display(auth_context):
     """
-    View function for displaying the sell page.
+    View function for displaying the upload resource page.
 
     Parameters:
        auth_context (dict): The authentication context of request.
@@ -52,44 +49,35 @@ def display(auth_context):
        Rendered HTML page.
     """
 
-    # Prepares the sell form.
+    # Prepares the upload resourse form.
     # See middlewares/form_validation.py for more information.
     form = ResourceUploadForm()
     form.course_id.choices = [
         (course.course_id, course.title) for course in courses.list_course()
     ]
-    # courses_item = courses.list_course()
     return render_template("upload_resource.html", auth_context=auth_context, form=form)
 
-# credentials_path = '../../../syscourse-474-privatekey.json'
-# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials_path
 
 @upload_resource_page.route("/upload_resource", methods=["POST"])
 @auth_required
 @resource_form_validation_required
 def process(auth_context, form):
     """
-    View function for processing sell requests.
+    View function for processing upload resource requests.
 
     Parameters:
        auth_context (dict): The authentication context of request.
                             See middlewares/auth.py for more information.
-       form (SellForm): A validated sell form.
+       form (SellForm): A validated upload_resource form.
                         See middlewares/form_validation.py for more
                         information.
     Output:
        Rendered HTML page.
-<<<<<<< HEAD
-    """ 
-    
-    form.course_id.choices = [(course.course_id, course.title) for course in courses.list_course()]
-=======
     """
     form.course_id.choices = [
         (course.course_id, course.title) for course in courses.list_course()
     ]
 
->>>>>>> master
     upload_resource = resources.Resource(
         title=form.title.data,
         description=form.description.data,
@@ -102,29 +90,17 @@ def process(auth_context, form):
     )
 
     resource_id = resources.add_resource(upload_resource)
-    # product_id = product_catalog.add_product(upload_resource)
+
     # Publish an event to the topic for new products.
     # Cloud Function detect_labels subscribes to the topic and labels the
     # product using Cloud Vision API upon arrival of new events.
     # Cloud Function streamEvents (or App Engine service stream-event)
     # subscribes to the topic and saves the event to BigQuery for
     # data analytics upon arrival of new events.
-<<<<<<< HEAD
-    email = auth_context.get('email')
-    eventing.stream_event(
-        topic_name=PUBSUB_TOPIC_NEW_PRODUCT,
-        event_type='new-product-sub',
-        event_context={
-            'to': email,
-            'subject': 'Successfully Uploaded Resource to Syscourse',
-            'text': 'resource uploaded to syscourse.'
-        }
-=======
-    eventing.stream_event(
-        topic_name=PUBSUB_TOPIC_NEW_RESOURCE,
-        event_type="label_detection",
-        event_context={"resource_id": resource_id, "resource_url": upload_resource.url},
->>>>>>> master
-    )
+   #  eventing.stream_event(
+   #      topic_name="new-product",
+   #      event_type="email",
+   #      event_context={"resource_id": resource_id, "resource_url": upload_resource.url},
+   #  )
 
     return redirect(url_for("course_page.display"))

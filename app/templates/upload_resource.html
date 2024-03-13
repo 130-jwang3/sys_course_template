@@ -4,15 +4,7 @@
   <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
   <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
   <link href="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.css" rel="stylesheet">
-  <style>
-    .container {
-      max-width: 800px; /* Set a max-width for the container for a more centralized look */
-      margin: auto;
-    }
-    #file-info {
-      text-align: center;
-    }
-  </style>
+  <link rel="stylesheet" href="/static/upload_resource.css">
 {% endblock %}
 {% block content %}
   <section class="hero is-medium">
@@ -20,7 +12,7 @@
       <div class="container has-text-centered">
         <h1 class="title">Upload Your Course Resources</h1>
         <h2 class="subtitle">
-          You can upload images or PDF documents. Fill in the details and submit.
+          You can upload images or PDF documents.
         </h2>
       </div>
     </div>
@@ -46,13 +38,13 @@
       <div class="field">
         <label class="label">Title</label>
         <div class="control">
-          <input class="input" type="text" name="title" placeholder="Resource title">
+          <input class="input" type="text" name="title" placeholder="Resource title" required>
         </div>
       </div>
       <div class="field">
         <label class="label">Description</label>
         <div class="control">
-          <textarea class="textarea" name="description" placeholder="Resource description"></textarea>
+          <textarea class="textarea" name="description" placeholder="Resource description" required></textarea>
         </div>
       </div>
       <!-- FilePond input for file upload -->
