@@ -15,7 +15,7 @@
 // Script for configuring Stripe.js.
 // See https://stripe.com/docs for more information.
 
-var stripe = Stripe('YOUR-API-KEY');
+var stripe = Stripe('pk_test_51Ot1zEJ9MDbyLNxLXvB3cEmOXR7UpmWwidxKPQnVgeE0IiWR59v1mnz69ugEhmCmuv1bEmZ4DUWWFtmga4T2ToF700sWhM32Pp');
 var elements = stripe.elements();
 var style = {
   base: {

@@ -22,3 +22,5 @@ from .upload_resourse import upload_resource_page
 from .signin import signin_page
 from .course import course_page
 from .resource import resource_page
+from .allresource import all_resource_page
+from .get_course import all_course_page

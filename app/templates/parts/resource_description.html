@@ -1,21 +1,32 @@
-<div class="container">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resource Description</title>
+  <link rel="stylesheet" href="/static/description.css">
+</head>
+<body>
+  <div class="container">
     <article class="media">
       <figure class="media-left">
-        <p class="image is-128x128">
-        <img src="https://storage.cloud.google.com/{{bucket}}/{{ resource.url }}.png" onerror="this.src='https://storage.cloud.google.com/{{bucket}}/placeholder.png'">
+        <p class="image">
+          <img src="https://storage.cloud.google.com/{{bucket}}/{{ resource.url }}.png" onerror="this.src='https://storage.cloud.google.com/{{bucket}}/placeholder.png'" alt="Resource Thumbnail">
         </p>
       </figure>
       <div class="media-content">
         <div class="content">
-        <p>
-          <strong>{{ resource.title }}</strong>
-          <br>
-          {{ resource.description }}
-          <br>
-          <strong>{{ resource.type }}</strong>
-          <br>
-        </p>
+          <p>
+            <strong>Title:</strong> {{ resource.title }}
+            <br>
+            <strong>Description:</strong> {{ resource.description }}
+            <br>
+            <strong>Type:</strong> {{ resource.type }}
+            <br>
+          </p>
         </div>
       </div>
     </article>
   </div>
+</body>
+</html>
