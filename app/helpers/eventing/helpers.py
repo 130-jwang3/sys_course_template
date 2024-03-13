@@ -52,8 +52,4 @@ def stream_event(topic_name, event_type, event_context):
         message_id = future.result()
         print(f"Published message {message_id} to {topic_path}")
     except Exception as e:
-<<<<<<< HEAD
         print(f"Error publishing message: {e}")
-=======
-        print(f"Error publishing message: {e}")
->>>>>>> master

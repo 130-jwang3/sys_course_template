@@ -30,11 +30,7 @@ from middlewares.form_validation import (
     resource_form_validation_required,
 )
 
-<<<<<<< HEAD
 PUBSUB_TOPIC_NEW_PRODUCT = os.environ.get('PUBSUB_TOPIC_NEW_PRODUCT')
-=======
-PUBSUB_TOPIC_NEW_RESOURCE = os.environ.get("PUBSUB_TOPIC_NEW_RESOURCE")
->>>>>>> master
 
 upload_resource_page = Blueprint("upload_resource_page", __name__)
 
@@ -79,17 +75,11 @@ def process(auth_context, form):
                         information.
     Output:
        Rendered HTML page.
-<<<<<<< HEAD
-    """ 
-    
-    form.course_id.choices = [(course.course_id, course.title) for course in courses.list_course()]
-=======
     """
     form.course_id.choices = [
         (course.course_id, course.title) for course in courses.list_course()
     ]
 
->>>>>>> master
     upload_resource = resources.Resource(
         title=form.title.data,
         description=form.description.data,
@@ -109,7 +99,6 @@ def process(auth_context, form):
     # Cloud Function streamEvents (or App Engine service stream-event)
     # subscribes to the topic and saves the event to BigQuery for
     # data analytics upon arrival of new events.
-<<<<<<< HEAD
     email = auth_context.get('email')
     eventing.stream_event(
         topic_name=PUBSUB_TOPIC_NEW_PRODUCT,
@@ -119,12 +108,6 @@ def process(auth_context, form):
             'subject': 'Successfully Uploaded Resource to Syscourse',
             'text': 'resource uploaded to syscourse.'
         }
-=======
-    eventing.stream_event(
-        topic_name=PUBSUB_TOPIC_NEW_RESOURCE,
-        event_type="label_detection",
-        event_context={"resource_id": resource_id, "resource_url": upload_resource.url},
->>>>>>> master
     )
 
     return redirect(url_for("course_page.display"))
