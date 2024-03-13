@@ -46,6 +46,7 @@ app.secret_key = b'A Super Secret Key'
 # app.register_blueprint(charge_page)
 # app.register_blueprint(checkout_page)
 # app.register_blueprint(product_catalog_page)
+app.register_blueprint(add_course_page)
 app.register_blueprint(upload_resource_page)
 app.register_blueprint(course_page)
 app.register_blueprint(resource_page)

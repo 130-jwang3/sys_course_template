@@ -14,7 +14,7 @@
 
 
 """
-A collection of helper functions for cart related operations.
+A collection of helper functions for courses related operations.
 """
 
 import os
@@ -108,6 +108,7 @@ def list_course():
         return courses
     else:
         response.raise_for_status()
+
 
 
 def remove_course(uid, course_id):

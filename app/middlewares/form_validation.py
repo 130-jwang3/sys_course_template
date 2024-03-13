@@ -22,25 +22,37 @@ from functools import wraps
 
 from flask_wtf import FlaskForm
 from wtforms import FieldList, FloatField, StringField, SelectField, TextAreaField, FileField
-from wtforms.validators import DataRequired, Optional
+from wtforms.validators import DataRequired, NumberRange, Optional
 from flask_wtf.file import FileAllowed
 from helpers import courses
 
-# class SellForm(FlaskForm):
-#     """
-#     FlaskForm for selling items.
-#     """
-#     name = StringField('name', validators=[DataRequired()])
-#     description = StringField('description', validators=[DataRequired()])
-#     price = FloatField('price', validators=[DataRequired()])
-#     image = StringField('image', validators=[DataRequired()])
+class AddCourseForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    instructor = StringField('Instructor', validators=[DataRequired()])
+    field = StringField('Field', validators=[DataRequired()])
+    level = StringField('Level')  # Changed to StringField
+    language = StringField('Language', validators=[DataRequired()])
+    # thumbnailUrl = StringField('Thumbnail URL', validators=[DataRequired()])
+    
+def course_form_validation_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        course_upload_form = AddCourseForm()
+
+        if not course_upload_form.validate():
+            # Handling for validation failure
+            return 'Something does not look right. Check your input and try again.', 400
+
+        return f(form=course_upload_form,*args, **kwargs)
+    return decorated
+    
 class ResourceUploadForm(FlaskForm):
     """
     FlaskForm for uploading resources.
     """
     title = StringField('Title', validators=[DataRequired(message="The title is required.")])
     description = TextAreaField('Description', validators=[DataRequired(message="A description is required.")])
-    # Assuming you have a function to get the list of courses for the SelectField choices
     course_id = SelectField('Course', coerce=str, validators=[DataRequired(message="You must select a course.")])
     # resourceFile = FileField('File', validators=[
     #     DataRequired(message="A file upload is required."),

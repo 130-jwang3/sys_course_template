@@ -28,7 +28,7 @@ class Course:
     Data class for courses.
     """
 
-    
+    # course_id: str
     title: str
     description: str
     instructor: str
