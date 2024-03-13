@@ -14,26 +14,21 @@
 
 
 """
-A collection of helper functions for cart related operations.
+A collection of helper functions for resource related operations.
 """
 
 
-from dataclasses import asdict
-import time
-import os
-import uuid
-
-from google.cloud import firestore
-
+import requests
 from .data_classes import Resource
-
-firestore_client = firestore.Client()
-
+import os
 BUCKET = os.environ.get('GCS_BUCKET')
+
+# Set the base URL of deployed Cloud Function
+CLOUD_FUNCTION_BASE_URL = "https://flask-app-vcpbdzc5da-uc.a.run.app"
 
 def add_resource(resource):
     """
-    Helper function for adding a resource.
+    Helper function for adding a resource. Calls a Cloud Function endpoint.
 
     Parameters:
        resource (Resource): A Resource object.
@@ -41,14 +36,16 @@ def add_resource(resource):
     Output:
        The ID of the resource
     """
-    resource_id = uuid.uuid4().hex
-    firestore_client.collection("resources").document(resource_id).set(asdict(resource))
-    return resource_id
-
+    url = f"{CLOUD_FUNCTION_BASE_URL}/resources"
+    response = requests.post(url, json=resource.__dict__)  # Ensure resource is serializable
+    if response.ok:
+        return response.json().get("resource_id")  # Ensure the key matches the Cloud Function's response
+    else:
+        response.raise_for_status()
 
 def get_resource(resource_id):
     """
-    Helper function for getting a resource.
+    Helper function for getting a resource. Calls a Cloud Function endpoint.
 
     Parameters:
        resource_id (str): The ID of the resource.
@@ -56,13 +53,16 @@ def get_resource(resource_id):
     Output:
        A Resource object.
     """
-    resource = firestore_client.collection("resources").document(resource_id).get()
-    return Resource.deserialize(resource)
-
+    url = f"{CLOUD_FUNCTION_BASE_URL}/resources/{resource_id}"
+    response = requests.get(url)
+    if response.ok:
+        return Resource(**response.json())
+    else:
+        response.raise_for_status()
 
 def list_resources():
     """
-    Helper function for listing resources.
+    Helper function for listing resources. Calls a Cloud Function endpoint.
 
     Parameters:
        None.
@@ -70,15 +70,31 @@ def list_resources():
     Output:
        A list of Resource objects.
     """
-
-    resources = firestore_client.collection("resources").order_by("title").get()
-    resource_list = [Resource.deserialize(resource) for resource in list(resources)]
-    return resource_list
-
+    url = f"{CLOUD_FUNCTION_BASE_URL}/resources"
+    response = requests.get(url)
+    if response.ok:
+        resources_data = response.json()
+        resources = []
+        for res in resources_data:
+            resource = Resource(
+                course_id=res.get('course_id'),
+                title=res.get('title'),
+                type=res.get('type'),
+                url=res.get('url'),
+                description=res.get('description'),
+                uid=res.get('uid'),
+                duration=res.get('duration'),
+                document_id=res.get('document_id'),
+                resource_id=res.get('resource_id')
+            )
+            resources.append(resource)
+        return resources
+    else:
+        response.raise_for_status()
 
 def list_resources_by_course(course_id):
     """
-    Helper function for listing resources base on course id.
+    Helper function for listing resources based on course id. Calls a Cloud Function endpoint.
 
     Parameters:
        course_id (str): The ID of the course.
@@ -86,21 +102,31 @@ def list_resources_by_course(course_id):
     Output:
        A list of Resource objects.
     """
-    resources_ref = firestore_client.collection("resources")
-    query = resources_ref.where("course_id", "==", course_id)
-    results = query.get()
-
-    resources = []
-    for doc in results:
-        resource = Resource.deserialize(doc)
-        if resource:
+    url = f"{CLOUD_FUNCTION_BASE_URL}/resources/course/{course_id}"
+    response = requests.get(url)
+    if response.ok:
+        resources_data = response.json()
+        resources = []
+        for res in resources_data:
+            resource = Resource(
+                course_id=res.get('course_id'),
+                title=res.get('title'),
+                type=res.get('type'),
+                url=res.get('url'),
+                description=res.get('description'),
+                uid=res.get('uid'),
+                duration=res.get('duration'),
+                document_id=res.get('document_id'),
+                resource_id=res.get('resource_id')
+            )
             resources.append(resource)
-
-    return resources
+        return resources
+    else:
+        response.raise_for_status()
 
 def delete_resource(uid, resource_id):
     """
-    Deletes a resource based on UID and resource ID.
+    Deletes a resource based on UID and resource ID. Calls a Cloud Function endpoint.
 
     Parameters:
     - uid (str): The unique ID of the user who owns the resource.
@@ -109,15 +135,9 @@ def delete_resource(uid, resource_id):
     Output:
     - A message indicating the outcome of the operation.
     """
-    resource_ref = firestore_client.collection('resources').document(resource_id)
-    resource_doc = resource_ref.get()
-
-    if resource_doc.exists:
-        resource_data = resource_doc.to_dict()
-        if resource_data['uid'] == uid:
-            resource_ref.delete()
-            return "Resource successfully deleted."
-        else:
-            return "Unauthorized to delete this resource."
+    url = f"{CLOUD_FUNCTION_BASE_URL}/resources/{resource_id}"
+    response = requests.delete(url, params={"resource_id": resource_id})
+    if response.ok:
+        return "Resource successfully deleted."
     else:
-        return "Resource not found."
+        return response.text
