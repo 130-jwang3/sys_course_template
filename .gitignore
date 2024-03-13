@@ -8,3 +8,9 @@ package-lock.json
 env
 .pyc
 *.orig
+app_stream_events.yaml
+app.yaml
+firebase_config.json
+functions_env_vars.yaml
+gcsFetcherManifest.json
+initFirebase.js

@@ -50,8 +50,34 @@
         <a class="navbar-item nav-link" href="/all_course">Courses</a>
         <a class="navbar-item nav-link" href="/all_resource">Resources</a>
         {% if auth_context %}
+<<<<<<< HEAD
+        <div class="navbar-item">
+          <a id="username" class="has-text-white">{{ auth_context.get('username') }} ({{ auth_context.get('email')
+            }})</a>
+        </div>
+        <div class="navbar-item">
+          <a id="bell" class="has-text-white"><i class="fas fa-bell"></i></a>
+        </div>
+        <div class="navbar-item">
+          <a id="cart" class="has-text-white" href="/cart"><i class="fas fa-shopping-cart"></i></a>
+        </div>
+        <div class="navbar-item">
+          <a id="sign-out-control" class="has-text-white" onclick="signOutWithGoogle()"><i
+              class="fas fa-sign-out-alt"></i></a>
+        </div>
+        <div class="navbar-item">
+          <div class="buttons">
+            <a class="button is-primary has-background-info" href="/upload_resource"><strong>Upload Resource</strong></a>
+          </div>
+        </div>
+        {% else %}
+        <div class="navbar-item">
+          <a id="sign-in-control" class="has-text-white" href="/signin">Sign in with <i class="fab fa-google"></i></a>
+        </div>
+=======
         <a class="navbar-item nav-link" href="/upload_resource">Upload Resources</a>
         <a class="navbar-item nav-link" href="/add_course">Add Course</a>
+>>>>>>> master
         {% endif %}
       </div>
       <div class="ml-auto">
