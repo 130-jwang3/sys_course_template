@@ -51,6 +51,8 @@ app.register_blueprint(upload_resource_page)
 app.register_blueprint(course_page)
 app.register_blueprint(resource_page)
 app.register_blueprint(signin_page)
+app.register_blueprint(all_resource_page)
+app.register_blueprint(all_course_page)
 
 
 if __name__ == '__main__':

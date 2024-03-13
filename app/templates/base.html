@@ -4,8 +4,29 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+  integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+  crossorigin="anonymous"
+/>
+<style>
+  body {
+      background-color: silver; /* Set the background color to silver */
+      }
+  .navbar-item.nav-link {
+      color: white; /* Set text color to white for navbar links */
+      cursor: pointer; /* Change cursor to pointer when hovering over navbar links */
+  }
+</style>
+<link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+  crossorigin="anonymous"
+/>
   <title>{% block title %}{% endblock %}</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+ 
+  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css"> -->
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   <!-- <script type="module" src="https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js"></script> -->
   <script type="module" src="/static/initFirebase.js"></script>
@@ -16,38 +37,36 @@
 </head>
 
 <body>
-  <nav class="navbar has-background-dark">
-    <div class="navbar-menu">
-      <div class="navbar-start">
-        <a class="navbar-item has-text-light" href="/">Sys Course</a>
-      </div>
-      {% block navbar_end %}
-      <div class="navbar-end">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark"style="background-color: #0e4d88;">
+    <button class="navbar-toggler" 
+    type="button" 
+    data-toggle="collapse" 
+    data-target="#navbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar">
+      <div class="navbar-nav">
+        <a class="navbar-item nav-link" href="/"><strong>Sys Course</strong> </a>
+        <a class="navbar-item nav-link" href="/all_course">Courses</a>
+        <a class="navbar-item nav-link" href="/all_resource">Resources</a>
         {% if auth_context %}
-        <div class="navbar-item">
-          <a id="username" class="has-text-white">{{ auth_context.get('username') }} ({{ auth_context.get('email')
-            }})</a>
-        </div>
-        <div class="navbar-item">
-          <a id="sign-out-control" class="has-text-white" onclick="signOutWithGoogle()"><i
-              class="fas fa-sign-out-alt"></i></a>
-        </div>
-        <div class="navbar-item">
-          <div class="buttons">
-            <a class="button is-primary has-background-info" href="/upload_resource"><strong>Upload Resource</strong></a>
-            <a class="button is-primary has-background-info" href="/add_course"><strong>Add Course</strong></a>
-          </div>
-        </div>
-        {% else %}
-        <div class="navbar-item">
-          <a id="sign-in-control" class="has-text-white" href="/signin">Sign in with <i class="fab fa-google"></i></a>
-        </div>
+        <a class="navbar-item nav-link" href="/upload_resource">Upload Resources</a>
+        <a class="navbar-item nav-link" href="/add_course">Add Course</a>
         {% endif %}
       </div>
-      {% endblock %}
+      <div class="ml-auto">
+        {% if auth_context %}
+        <a id="username" class="navbar-item nav-link" style="color: white;">{{ auth_context.get('username') }} ({{ auth_context.get('email') }})</a>
+        <a id="sign-out-control" class="navbar-item nav-link" onclick="signOutWithGoogle()" style="color: white; cursor: pointer;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        {% else %}
+        <a class="navbar-item nav-link" id="sign-in-control" href="/signin" style="color: white;">Sign in with <i class="fab fa-google"></i></a>
+        {% endif %}
+        </div>
+      </div>
     </div>
   </nav>
   {% block content %}{% endblock %}
-</body>
 
-</html>
+<script
+src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+integrity="sha384-KJ3o2DKt

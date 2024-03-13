@@ -1,13 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Sys Course: Add Course{% endblock %}
 {% block head_extension %}
-  <style>
-    .container {
-      max-width: 800px; /* Set a max-width for the container for a more centralized look */
-      margin: auto;
-    }
-  </style>
+  <link rel="stylesheet" href="/static/add-course-form.css">
 {% endblock %}
+
 {% block content %}
   <section class="hero is-medium">
     <div class="hero-body">
@@ -25,37 +21,37 @@
       <div class="field">
         <label class="label">Title</label>
         <div class="control">
-          {{ form.title(class="input", placeholder="Course title") }}
+          {{ form.title(class="input", placeholder="Course title", required=true) }}
         </div>
       </div>
       <div class="field">
         <label class="label">Description</label>
         <div class="control">
-          {{ form.description(class="textarea", placeholder="Course description") }}
+          {{ form.description(class="textarea", placeholder="Course description", required=true) }}
         </div>
       </div>
       <div class="field">
         <label class="label">Instructor</label>
         <div class="control">
-          {{ form.instructor(class="input", placeholder="Instructor's name") }}
+          {{ form.instructor(class="input", placeholder="Instructor's name", required=true) }}
         </div>
       </div>
       <div class="field">
         <label class="label">Field</label>
         <div class="control">
-          {{ form.field(class="input", placeholder="Field of study") }}
+          {{ form.field(class="input", placeholder="Field of study", required=true) }}
         </div>
       </div>
       <div class="field">
         <label class="label">Level</label>
         <div class="control">
-          {{ form.level(class="input", placeholder="Course level") }}
+          {{ form.level(class="input", placeholder="Course level", required=true) }}
         </div>
       </div>
       <div class="field">
         <label class="label">Language</label>
         <div class="control">
-          {{ form.language(class="input", placeholder="Language") }}
+          {{ form.language(class="input", placeholder="Language", required=true) }}
         </div>
       </div>
       <div class="field">
