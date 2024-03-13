@@ -47,7 +47,10 @@ def stream_event(topic_name, event_type, event_context):
         'created_time': str(int(time.time())),
         'event_context': event_context
     }
-    data = json.dumps(request).encode()
-   #  publisher.publish(topic_path, data)
-    future = publisher.publish(topic_path, data)
-    print(future)
+    data = json.dumps(request).encode("utf-8")
+    try:
+        future = publisher.publish(topic_path, data)
+        message_id = future.result()
+        print(f"Published message {message_id} to {topic_path}")
+    except Exception as e:
+        print(f"Error publishing message: {e}")

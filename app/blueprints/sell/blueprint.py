@@ -52,6 +52,8 @@ def display(auth_context):
     # courses_item = courses.list_course()
     return render_template('upload_resource.html', auth_context=auth_context, form=form)
 
+# credentials_path = '../../../syscourse-474-privatekey.json'
+# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials_path
 
 @upload_resource_page.route('/upload_resource', methods=['POST'])
 @auth_required
@@ -69,18 +71,6 @@ def process(auth_context, form):
     Output:
        Rendered HTML page.
     """ 
-    email = auth_context.get('email')
-    print("Before publishing event to Pub/Sub")
-    eventing.stream_event(
-        topic_name=PUBSUB_TOPIC_NEW_PRODUCT,
-        event_type='new-product-sub',
-        event_context={
-            'to': email,
-            'subject': 'Test Email',
-            'text': 'This is a test email.'
-        }
-    )
-    print("After publishing event to Pub/Sub")
     
     form.course_id.choices = [(course.course_id, course.title) for course in courses.list_course()]
     upload_resource = resources.Resource(
@@ -101,5 +91,15 @@ def process(auth_context, form):
     # Cloud Function streamEvents (or App Engine service stream-event)
     # subscribes to the topic and saves the event to BigQuery for
     # data analytics upon arrival of new events.
+    email = auth_context.get('email')
+    eventing.stream_event(
+        topic_name=PUBSUB_TOPIC_NEW_PRODUCT,
+        event_type='new-product-sub',
+        event_context={
+            'to': email,
+            'subject': 'Successfully Uploaded Resource to Syscourse',
+            'text': 'resource uploaded to syscourse.'
+        }
+    )
 
     return redirect(url_for('course_page.display'))
