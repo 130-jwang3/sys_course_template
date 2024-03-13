@@ -16,10 +16,10 @@
 runtime: python39
 
 env_variables:
-  GCP_PROJECT: "temp"
-  PUBSUB_TOPIC_NEW_PRODUCT: "new-product"
-  PUBSUB_TOPIC_PAYMENT_PROCESS: "payment-process"
-  GCS_BUCKET: "temp-image-111"
+  GCP_PROJECT: "YOUR-PROJECT"
+  PUBSUB_TOPIC_NEW_PRODUCT: "YOUR-NEW-PRODUCT-TOPIC"
+  PUBSUB_TOPIC_PAYMENT_PROCESS: "YOUR-PAYMENT-TOPIC"
+  GCS_BUCKET: "YOUR-GCS-BUCKET"
   FIREBASE_CONFIG: "firebase_config.json"
 
 handlers:
