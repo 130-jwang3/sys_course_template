@@ -26,7 +26,7 @@ from google.cloud import pubsub_v1
 
 publisher = pubsub_v1.PublisherClient()
 
-GCP_PROJECT = os.environ.get('GCP_PROJECT')
+GCP_PROJECT_ID = os.environ.get('GCP_PROJECT_ID')
 
 def stream_event(topic_name, event_type, event_context):
     """
@@ -40,12 +40,16 @@ def stream_event(topic_name, event_type, event_context):
     Output:
        None.
     """
-
-    topic_path = publisher.topic_path(GCP_PROJECT, topic_name)
+    topic_path = publisher.topic_path(GCP_PROJECT_ID, topic_name)
     request = {
         'event_type': event_type,
         'created_time': str(int(time.time())),
         'event_context': event_context
     }
-    data = json.dumps(request).encode()
-    publisher.publish(topic_path, data)
+    data = json.dumps(request).encode("utf-8")
+    try:
+        future = publisher.publish(topic_path, data)
+        message_id = future.result()
+        print(f"Published message {message_id} to {topic_path}")
+    except Exception as e:
+        print(f"Error publishing message: {e}")
