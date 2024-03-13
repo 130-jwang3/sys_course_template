@@ -48,4 +48,6 @@ def stream_event(topic_name, event_type, event_context):
         'event_context': event_context
     }
     data = json.dumps(request).encode()
-    publisher.publish(topic_path, data)
+   #  publisher.publish(topic_path, data)
+    future = publisher.publish(topic_path, data)
+    print(future)

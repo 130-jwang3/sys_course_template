@@ -16,11 +16,10 @@
 runtime: python39
 
 env_variables:
-  GCP_PROJECT: "sys-course"
+  GCP_PROJECT: "syscourse-474"
   PUBSUB_TOPIC_NEW_PRODUCT: "new-product"
   PUBSUB_TOPIC_PAYMENT_PROCESS: "payment-process"
-  PUBSUB_TOPIC_NOTIFICATION: "notification"
-  GCS_BUCKET: "syscourse-educational-image"
+  GCS_BUCKET: "syscourse-web"
   FIREBASE_CONFIG: "firebase_config.json"
 
 handlers:

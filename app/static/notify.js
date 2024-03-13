@@ -1,4 +1,7 @@
 const projectId = 'syscourse-474';
+const topicName = 'send-email';
+const url = `https://pubsub.googleapis.com/v1/projects/${projectId}/topics/${topicName}:publish`;
+
 const pubsub = new google.pubsub.v1.PublisherClient();
 
 function publishMessage() {

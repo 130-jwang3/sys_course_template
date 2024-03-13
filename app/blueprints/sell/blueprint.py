@@ -27,7 +27,7 @@ from helpers import eventing, product_catalog, resources, courses
 from middlewares.auth import auth_required
 from middlewares.form_validation import ResourceUploadForm, resource_form_validation_required
 
-PUBSUB_TOPIC_NEW_RESOURCE = os.environ.get('PUBSUB_TOPIC_NEW_RESOURCE')
+PUBSUB_TOPIC_NEW_PRODUCT = os.environ.get('PUBSUB_TOPIC_NEW_PRODUCT')
 
 upload_resource_page = Blueprint('upload_resource_page', __name__)
 
@@ -68,9 +68,21 @@ def process(auth_context, form):
                         information.
     Output:
        Rendered HTML page.
-    """
-    form.course_id.choices = [(course.course_id, course.title) for course in courses.list_course()]
+    """ 
+    email = auth_context.get('email')
+    print("Before publishing event to Pub/Sub")
+    eventing.stream_event(
+        topic_name=PUBSUB_TOPIC_NEW_PRODUCT,
+        event_type='new-product-sub',
+        event_context={
+            'to': email,
+            'subject': 'Test Email',
+            'text': 'This is a test email.'
+        }
+    )
+    print("After publishing event to Pub/Sub")
     
+    form.course_id.choices = [(course.course_id, course.title) for course in courses.list_course()]
     upload_resource = resources.Resource(
         title = form.title.data,
         description=form.description.data,
@@ -89,12 +101,5 @@ def process(auth_context, form):
     # Cloud Function streamEvents (or App Engine service stream-event)
     # subscribes to the topic and saves the event to BigQuery for
     # data analytics upon arrival of new events.
-    # eventing.stream_event(
-    #     topic_name=PUBSUB_TOPIC_NEW_RESOURCE,
-    #     event_type='label_detection',
-    #     event_context={
-    #         'resource_id': resource_id,
-    #         'resource_url': upload_resource.url
-    #     })
 
     return redirect(url_for('course_page.display'))
