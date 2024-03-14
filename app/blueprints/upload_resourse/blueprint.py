@@ -32,7 +32,6 @@ from middlewares.form_validation import (
 
 PUBSUB_TOPIC_NEW_PRODUCT = os.environ.get("PUBSUB_TOPIC_NEW_PRODUCT")
 
-
 upload_resource_page = Blueprint("upload_resource_page", __name__)
 
 
@@ -97,10 +96,15 @@ def process(auth_context, form):
     # Cloud Function streamEvents (or App Engine service stream-event)
     # subscribes to the topic and saves the event to BigQuery for
     # data analytics upon arrival of new events.
-   #  eventing.stream_event(
-   #      topic_name="new-product",
-   #      event_type="email",
-   #      event_context={"resource_id": resource_id, "resource_url": upload_resource.url},
-   #  )
+    email = auth_context.get('email')
+    eventing.stream_event(
+        topic_name=PUBSUB_TOPIC_NEW_PRODUCT,
+        event_type='new-product-sub',
+        event_context={
+            'to': email,
+            'subject': 'Successfully Uploaded Resource to Syscourse',
+            'text': 'resource uploaded to syscourse.'
+        }
+    )
 
     return redirect(url_for("course_page.display"))
