@@ -15,6 +15,10 @@
         "sourceUrl": "gs://temp-416704-build/cloudbuild/stripe.js",
         "sha1sum": ""
     },
+    "extras/streamEventsApp/app.yaml":{
+        "sourceUrl": "gs://temp-416704-build/cloudbuild/app_stream_events.yaml",
+        "sha1sum": ""
+    },
     "extras/cloudbuild/functions_env_vars.yaml": {
         "sourceUrl": "gs://temp-416704-build/cloudbuild/functions_env_vars.yaml",
         "sha1sum": ""
