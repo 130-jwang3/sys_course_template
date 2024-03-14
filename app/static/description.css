@@ -1,7 +1,6 @@
 /* description.css */
 
 .container {
-    display: flex;
     align-items: flex-start; /* Align items to the top */
   }
   

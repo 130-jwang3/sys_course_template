@@ -24,15 +24,15 @@
         <label class="label">Course</label>
         <div class="control has-icons-left">
           <div class="select is-fullwidth">
+            <span class="icon is-small is-left">
+              <i class="fas fa-book"></i>
+            </span>
             <select name="course_id">
               {% for choice in form.course_id.choices %}
                 <option value="{{ choice[0] }}">{{ choice[1] }}</option>
               {% endfor %}
             </select>
           </div>
-          <span class="icon is-small is-left">
-            <i class="fas fa-book"></i>
-          </span>
         </div>
       </div>
       <div class="field">
