@@ -17,11 +17,11 @@ runtime: python39
 
 
 env_variables:
-  GCP_PROJECT: "YOUR-PROJECT"
-  GCP_PROJECT_ID: "YOUR-PROJECT-ID"
+  GCP_PROJECT: "temp"
+  GCP_PROJECT_ID: "temp-416704"
   PUBSUB_TOPIC_NEW_PRODUCT: "new-product"
   PUBSUB_TOPIC_PAYMENT_PROCESS: "payment-process"
-  GCS_BUCKET: "YOUR-GCS-BUCKET"
+  GCS_BUCKET: "temp-image-111"
   FIREBASE_CONFIG: "firebase_config.json"
 
 
