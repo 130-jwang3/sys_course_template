@@ -85,7 +85,7 @@ def process(auth_context, form):
     
     # Continue processing since there is a file
     filename = secure_filename(file.filename)
-    cloud_function_url = 'https://us-central1-project-syscourse.cloudfunctions.net/upload_image'
+    cloud_function_url = 'https://us-central1-YOUR-PROJECT-ID.cloudfunctions.net/upload_image'
     files = {'filepond': (filename, file, file.content_type)}
     
     # Send the file to the Cloud Function
