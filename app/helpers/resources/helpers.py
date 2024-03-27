@@ -24,7 +24,7 @@ import os
 BUCKET = os.environ.get('GCS_BUCKET')
 
 # Set the base URL of deployed Cloud Function
-CLOUD_FUNCTION_BASE_URL = "https://flask-app-vcpbdzc5da-uc.a.run.app"
+CLOUD_FUNCTION_BASE_URL = "https://flask-app-4ohwdfnmma-uc.a.run.app"
 
 def add_resource(resource):
     """
@@ -83,6 +83,7 @@ def list_resources():
                 url=res.get('url'),
                 description=res.get('description'),
                 uid=res.get('uid'),
+                thumbnail=res.get('thumbnail'),
                 duration=res.get('duration'),
                 document_id=res.get('document_id'),
                 resource_id=res.get('resource_id')
@@ -115,6 +116,7 @@ def list_resources_by_course(course_id):
                 url=res.get('url'),
                 description=res.get('description'),
                 uid=res.get('uid'),
+                thumbnail=res.get('thumbnail'),
                 duration=res.get('duration'),
                 document_id=res.get('document_id'),
                 resource_id=res.get('resource_id')

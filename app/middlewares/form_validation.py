@@ -25,6 +25,7 @@ from wtforms import FieldList, FloatField, StringField, SelectField, TextAreaFie
 from wtforms.validators import DataRequired, NumberRange, Optional
 from flask_wtf.file import FileAllowed
 from helpers import courses
+from flask import flash
 
 class AddCourseForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
@@ -54,26 +55,10 @@ class ResourceUploadForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired(message="The title is required.")])
     description = TextAreaField('Description', validators=[DataRequired(message="A description is required.")])
     course_id = SelectField('Course', coerce=str, validators=[DataRequired(message="You must select a course.")])
-    # resourceFile = FileField('File', validators=[
-    #     DataRequired(message="A file upload is required."),
-    #     FileAllowed(['png', 'pdf'], message="The file type is not allowed.")
-    # ])
-
-
-class CheckOutForm(FlaskForm):
-    """
-    FlaskForm for checking out items.
-    """
-    product_ids = FieldList(StringField('product_id', validators=[DataRequired()]), min_entries=1)
-    address_1 = StringField('address_1', validators=[DataRequired()])
-    address_2 = StringField('address_2', validators=[Optional()])
-    city = StringField('city', validators=[DataRequired()])
-    state = StringField('state', validators=[DataRequired()])
-    zip_code = StringField('zip_code', validators=[DataRequired()])
-    email = StringField('email', validators=[DataRequired()])
-    mobile = StringField('mobile', validators=[DataRequired()])
-    stripeToken = StringField('stripeToken', validators=[DataRequired()])
-
+    resourceFile = FileField('File', validators=[
+        DataRequired(message="A file upload is required."),
+        FileAllowed(['png', 'pdf'], message="Only .png and .pdf files are accepted.")
+    ])
 
 def resource_form_validation_required(f):
     @wraps(f)
@@ -88,6 +73,20 @@ def resource_form_validation_required(f):
 
         return f(form=resource_upload_form,*args, **kwargs)
     return decorated
+
+class CheckOutForm(FlaskForm):
+    """
+    FlaskForm for checking out items.
+    """
+    product_ids = FieldList(StringField('product_id', validators=[DataRequired()]), min_entries=1)
+    address_1 = StringField('address_1', validators=[DataRequired()])
+    address_2 = StringField('address_2', validators=[Optional()])
+    city = StringField('city', validators=[DataRequired()])
+    state = StringField('state', validators=[DataRequired()])
+    zip_code = StringField('zip_code', validators=[DataRequired()])
+    email = StringField('email', validators=[DataRequired()])
+    mobile = StringField('mobile', validators=[DataRequired()])
+    stripeToken = StringField('stripeToken', validators=[DataRequired()])
 
 
 def checkout_form_validation_required(f):

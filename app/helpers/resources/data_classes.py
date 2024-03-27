@@ -14,7 +14,7 @@
 
 
 """
-Data class for course.
+Data class for resource.
 """
 
 
@@ -28,7 +28,7 @@ class Resource:
     Data class for courses.
     """
 
-    
+    resource_id: str
     course_id: str
     title: str
     type: str
@@ -36,10 +36,11 @@ class Resource:
     description: str
     # createdAt: str
     # updatedAt: str
+    thumbnail: str
     uid: str
     duration: Optional[int] = None
     document_id: str = None
-    resource_id: str = None
+    # resource_id: str = None
 
     @staticmethod
     def deserialize(document):
@@ -65,6 +66,7 @@ class Resource:
                 description=data.get("description"),
                 # createdAt=data.get("createdAt"),
                 # updatedAt=data.get("updatedAt"),
+                thumbnail=data.get("thumbnail"),
                 uid=data.get("uid"),
                 duration=data.get("duration"),
             )

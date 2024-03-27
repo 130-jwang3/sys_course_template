@@ -14,7 +14,7 @@
 
 
 """
-Cloud Function for processing uploaded images.
+Cloud Function for processing uploaded images/pdf.
 """
 
 
@@ -23,6 +23,7 @@ import uuid
 
 from google.cloud import storage
 from wand.image import Image
+from flask import jsonify, escape
 
 client = storage.Client()
 
@@ -58,6 +59,7 @@ def upload_image(request):
     file_content = file.read()
     content_type = file.content_type
     id = uuid.uuid4().hex
+    original_filename = escape(file.filename)
 
     if content_type.startswith('image/'):
         with Image(blob=file_content) as image:
@@ -70,9 +72,11 @@ def upload_image(request):
             )
             converted_content = image.make_blob(format='png')
         filename = IMAGE_FILENAME_TEMPLATE.format(id)
+        content_disposition = f'attachment; filename="{original_filename}"'
     elif content_type == 'application/pdf':
         converted_content = file_content
         filename = PDF_FILENAME_TEMPLATE.format(id)
+        content_disposition = f'attachment; filename="{original_filename}"'
     else:
         return ("Unsupported file type.", 400, headers)
     
@@ -80,5 +84,15 @@ def upload_image(request):
     bucket = client.get_bucket(BUCKET)
     blob = bucket.blob(filename)
     blob.upload_from_string(converted_content, content_type=content_type)
+    
+    # Set the Content-Disposition header
+    blob.content_disposition = content_disposition
+    blob.patch()
+    
+    public_url = f'https://storage.googleapis.com/{BUCKET}/{filename}'
 
-    return (id, 200, headers)
+    # Return a JSON response with the resource ID and the public URL of the file
+    return jsonify({
+        'resource_id': id,
+        'url': public_url
+    }), 200, headers
