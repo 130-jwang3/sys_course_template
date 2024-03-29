@@ -26,7 +26,7 @@ BUCKET = os.environ.get("GCS_BUCKET")
 
 
 # Set the base URL of deployed Cloud Function
-CLOUD_FUNCTION_BASE_URL = "https://course-helper-vcpbdzc5da-uc.a.run.app"
+CLOUD_FUNCTION_BASE_URL = "https://course-helper-ayc2jvsxua-uc.a.run.app"
 
 
 def add_course(course):

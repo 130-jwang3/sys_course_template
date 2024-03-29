@@ -21,6 +21,7 @@ setup guide, your `app.yaml` should look this after editing:
     PUBSUB_TOPIC_PAYMENT_PROCESS: "payment-process"
     GCS_BUCKET: "my-gcs-bucket"
     FIREBASE_CONFIG: "firebase_config.json"
+    API_GATEWAY_URL: "https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
 
     handlers:
     - url: /static

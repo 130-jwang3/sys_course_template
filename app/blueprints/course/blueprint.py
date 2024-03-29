@@ -16,7 +16,8 @@
 """
 This module is the Flask blueprint for the cart page (/cart).
 """
-
+import os
+import requests
 
 from flask import Blueprint, render_template, request
 
@@ -25,7 +26,7 @@ from middlewares.auth import auth_required, auth_optional
 
 
 course_page = Blueprint("course_page", __name__)
-
+API_GATEWAY = "https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
 
 @course_page.route("/")
 @auth_optional
@@ -39,9 +40,10 @@ def display(auth_context):
     Output:
         Rendered HTML page.
     """
+    api_gateway_url = API_GATEWAY + "/courses"
+    response = requests.get(api_gateway_url)
 
-    course_items = courses.list_course()
-
+    course_items = response.json()
     resource_items = resources.list_resources()
 
     return render_template(
@@ -70,7 +72,11 @@ def display_specific(auth_context):
 
     if course_id:
         # Fetch course details based on course_id
-        course = courses.get_course(course_id=course_id)
+        api_gateway_url = API_GATEWAY + "/courses/" + course_id
+        print(api_gateway_url)
+        response = requests.get(api_gateway_url)
+        course = response.json()
+        
         resource_list = resources.list_resources_by_course(course_id=course_id)
         return render_template(
             "course.html",

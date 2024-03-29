@@ -18,6 +18,7 @@ This module is the Flask blueprint for the resource page (/resource).
 """
 
 
+import os
 from flask import Blueprint, render_template, request
 
 from helpers import courses, resources
@@ -25,7 +26,7 @@ from middlewares.auth import auth_required, auth_optional
 
 
 resource_page = Blueprint("resource_page", __name__)
-
+API_GATEWAY = os.environ.get("API_GATEWAY")
 
 @resource_page.route('/resource', methods=['GET'])
 @auth_required

@@ -20,6 +20,7 @@ This module is the Flask blueprint for the upload resource page (/upload_resourc
 
 import os
 import time
+import requests
 
 from flask import Blueprint, redirect, render_template, url_for
 
@@ -31,6 +32,7 @@ from middlewares.form_validation import (
 )
 
 PUBSUB_TOPIC_NEW_PRODUCT = os.environ.get("PUBSUB_TOPIC_NEW_PRODUCT")
+API_GATEWAY = "https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
 
 upload_resource_page = Blueprint("upload_resource_page", __name__)
 
@@ -50,9 +52,12 @@ def display(auth_context):
 
     # Prepares the upload resourse form.
     # See middlewares/form_validation.py for more information.
+    api_gateway_url = API_GATEWAY + "/courses"
+    list_course = requests.get(api_gateway_url)
+    
     form = ResourceUploadForm()
     form.course_id.choices = [
-        (course.course_id, course.title) for course in courses.list_course()
+        (course.course_id, course.title) for course in list_course
     ]
     return render_template("upload_resource.html", auth_context=auth_context, form=form)
 

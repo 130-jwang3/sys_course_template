@@ -18,14 +18,19 @@ This module is the Flask blueprint for the add course page (/add_course).
 """
 
 
+from dataclasses import asdict
 import os
 import random
+import requests
 
 from flask import Blueprint, redirect, render_template, url_for
 
-from helpers import resources, courses
+from helpers import resources, courses, eventing
 from middlewares.auth import auth_required
 from middlewares.form_validation import AddCourseForm, course_form_validation_required
+
+PUBSUB_TOPIC_NEW_PRODUCT = os.environ.get("PUBSUB_TOPIC_NEW_PRODUCT")
+API_GATEWAY = "https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
 
 add_course_page = Blueprint('add_course_page', __name__)
 
@@ -64,7 +69,8 @@ def process(auth_context, form):
     Output:
        Rendered HTML page.
     """
-    
+    api_gateway_url = API_GATEWAY + "/courses"
+    print(api)
     new_course = courses.Course(
         title=form.title.data,
         description=form.description.data,
@@ -77,7 +83,21 @@ def process(auth_context, form):
         ratingsAverage="{:.1f}".format(random.uniform(1, 4.9)),
         ratingsCount=str(random.randint(1, 1000))
     )
-        
-    course_id = courses.add_course(new_course)
-
-    return redirect(url_for('course_page.display'))
+    new_course_dict = asdict(new_course)
+    response = requests.post(api_gateway_url, json=new_course_dict)
+    
+    if response.ok:
+        email = auth_context.get('email')
+        eventing.stream_event(
+            topic_name=PUBSUB_TOPIC_NEW_PRODUCT,
+            event_type='new-product-sub',
+            event_context={
+                'to': email,
+                'subject': 'Successfully Added Course to Syscourse',
+                'text': 'course uploaded to syscourse successfully.'
+            }
+        )
+        return redirect(url_for('course_page.display'))
+    else:
+        # Handle the case where the request to the API Gateway fails
+        return "Error: Failed to add course", 500
