@@ -42,9 +42,11 @@ def display(auth_context):
     """
     api_gateway_url = API_GATEWAY + "/courses"
     response = requests.get(api_gateway_url)
-
     course_items = response.json()
-    resource_items = resources.list_resources()
+    
+    api_gateway_url = API_GATEWAY + "/resources"
+    response = requests.get(api_gateway_url)
+    resource_items = response.json()
 
     return render_template(
         "main.html",
@@ -73,11 +75,12 @@ def display_specific(auth_context):
     if course_id:
         # Fetch course details based on course_id
         api_gateway_url = API_GATEWAY + "/courses/" + course_id
-        print(api_gateway_url)
         response = requests.get(api_gateway_url)
         course = response.json()
         
-        resource_list = resources.list_resources_by_course(course_id=course_id)
+        api_gateway_url = API_GATEWAY + "/resources/course/" + course_id
+        response = requests.get(api_gateway_url)
+        resource_list = response.json()
         return render_template(
             "course.html",
             course=course,

@@ -18,6 +18,7 @@ This module is the Flask blueprint for the upload resource page (/upload_resourc
 """
 
 
+from dataclasses import asdict
 import os
 import time
 import requests
@@ -53,11 +54,12 @@ def display(auth_context):
     # Prepares the upload resourse form.
     # See middlewares/form_validation.py for more information.
     api_gateway_url = API_GATEWAY + "/courses"
-    list_course = requests.get(api_gateway_url)
+    response = requests.get(api_gateway_url)
+    list_course = response.json()
     
     form = ResourceUploadForm()
     form.course_id.choices = [
-        (course.course_id, course.title) for course in list_course
+        (course["course_id"], course["title"]) for course in list_course
     ]
     return render_template("upload_resource.html", auth_context=auth_context, form=form)
 
@@ -78,10 +80,15 @@ def process(auth_context, form):
     Output:
        Rendered HTML page.
     """
+    api_gateway_url = API_GATEWAY + "/courses"
+    response = requests.get(api_gateway_url)
+    list_course = response.json()
+    
     form.course_id.choices = [
-        (course.course_id, course.title) for course in courses.list_course()
+        (course["course_id"], course["title"]) for course in list_course
     ]
 
+    api_gateway_url = API_GATEWAY + "/resources"
     upload_resource = resources.Resource(
         title=form.title.data,
         description=form.description.data,
@@ -92,24 +99,21 @@ def process(auth_context, form):
         uid=auth_context.get("uid"),
         course_id=form.course_id.data,
     )
+    new_upload_resource = asdict(upload_resource)
+    response = requests.post(api_gateway_url, json=new_upload_resource)
 
-    resource_id = resources.add_resource(upload_resource)
-
-    # Publish an event to the topic for new products.
-    # Cloud Function detect_labels subscribes to the topic and labels the
-    # product using Cloud Vision API upon arrival of new events.
-    # Cloud Function streamEvents (or App Engine service stream-event)
-    # subscribes to the topic and saves the event to BigQuery for
-    # data analytics upon arrival of new events.
-    email = auth_context.get('email')
-    eventing.stream_event(
-        topic_name=PUBSUB_TOPIC_NEW_PRODUCT,
-        event_type='new-product-sub',
-        event_context={
-            'to': email,
-            'subject': 'Successfully Uploaded Resource to Syscourse',
-            'text': 'resource uploaded to syscourse.'
-        }
-    )
-
-    return redirect(url_for("course_page.display"))
+    if response.ok:
+        email = auth_context.get('email')
+        eventing.stream_event(
+            topic_name=PUBSUB_TOPIC_NEW_PRODUCT,
+            event_type='new-product-sub',
+            event_context={
+                'to': email,
+                'subject': 'Successfully Uploaded Resource to Syscourse',
+                'text': 'resource uploaded to syscourse.'
+            }
+        )
+        return redirect(url_for("course_page.display"))
+    else:
+        # Handle the case where the request to the API Gateway fails
+        return "Error: Failed to add course", 500

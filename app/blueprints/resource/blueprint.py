@@ -17,7 +17,7 @@
 This module is the Flask blueprint for the resource page (/resource).
 """
 
-
+import requests
 import os
 from flask import Blueprint, render_template, request
 
@@ -26,7 +26,7 @@ from middlewares.auth import auth_required, auth_optional
 
 
 resource_page = Blueprint("resource_page", __name__)
-API_GATEWAY = os.environ.get("API_GATEWAY")
+API_GATEWAY = "https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
 
 @resource_page.route('/resource', methods=['GET'])
 @auth_required
@@ -41,11 +41,13 @@ def display_specific(auth_context):
         Rendered HTML page.
     """
 
-    resource_id = request.args.get('resource_id')
+    resource_id = request.args.get('resource_id')    
     
     if resource_id:
         # Fetch course details based on course_id
-        resource = resources.get_resource(resource_id=resource_id)
+        api_gateway_url = API_GATEWAY + "/resources/" + resource_id
+        response = requests.get(api_gateway_url)
+        resource = response.json()
         return render_template('resource.html', resource=resource, auth_context=auth_context, bucket=resources.BUCKET)
     else:
         return "Course ID is required", 400

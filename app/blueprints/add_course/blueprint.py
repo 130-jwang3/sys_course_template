@@ -70,7 +70,6 @@ def process(auth_context, form):
        Rendered HTML page.
     """
     api_gateway_url = API_GATEWAY + "/courses"
-    print(api)
     new_course = courses.Course(
         title=form.title.data,
         description=form.description.data,
