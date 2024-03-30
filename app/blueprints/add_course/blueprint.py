@@ -31,6 +31,8 @@ from middlewares.form_validation import AddCourseForm, course_form_validation_re
 
 PUBSUB_TOPIC_NEW_PRODUCT = os.environ.get("PUBSUB_TOPIC_NEW_PRODUCT")
 API_GATEWAY = "https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
+# GATEWAY_KEY = os.environ.get("GATEWAY_KEY")
+GATEWAY_KEY = "?key=AIzaSyB2PRCa87u1VsFXMw65lDgI03Y5HRFj9C4"
 
 add_course_page = Blueprint('add_course_page', __name__)
 
@@ -69,7 +71,7 @@ def process(auth_context, form):
     Output:
        Rendered HTML page.
     """
-    api_gateway_url = API_GATEWAY + "/courses"
+    api_gateway_url = API_GATEWAY + "/courses" + GATEWAY_KEY
     new_course = courses.Course(
         title=form.title.data,
         description=form.description.data,
@@ -83,6 +85,8 @@ def process(auth_context, form):
         ratingsCount=str(random.randint(1, 1000))
     )
     new_course_dict = asdict(new_course)
+    print("HERE")
+    print(GATEWAY_KEY)
     response = requests.post(api_gateway_url, json=new_course_dict)
     
     if response.ok:

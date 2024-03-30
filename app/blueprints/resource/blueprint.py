@@ -27,6 +27,7 @@ from middlewares.auth import auth_required, auth_optional
 
 resource_page = Blueprint("resource_page", __name__)
 API_GATEWAY = "https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
+GATEWAY_KEY = "?key=AIzaSyB2PRCa87u1VsFXMw65lDgI03Y5HRFj9C4"
 
 @resource_page.route('/resource', methods=['GET'])
 @auth_required
@@ -45,7 +46,7 @@ def display_specific(auth_context):
     
     if resource_id:
         # Fetch course details based on course_id
-        api_gateway_url = API_GATEWAY + "/resources/" + resource_id
+        api_gateway_url = API_GATEWAY + "/resources/" + resource_id + API_GATEWAY
         response = requests.get(api_gateway_url)
         resource = response.json()
         return render_template('resource.html', resource=resource, auth_context=auth_context, bucket=resources.BUCKET)

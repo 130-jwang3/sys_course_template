@@ -34,6 +34,7 @@ from middlewares.form_validation import (
 
 PUBSUB_TOPIC_NEW_PRODUCT = os.environ.get("PUBSUB_TOPIC_NEW_PRODUCT")
 API_GATEWAY = "https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
+GATEWAY_KEY = "?key=AIzaSyB2PRCa87u1VsFXMw65lDgI03Y5HRFj9C4"
 
 upload_resource_page = Blueprint("upload_resource_page", __name__)
 
@@ -53,7 +54,7 @@ def display(auth_context):
 
     # Prepares the upload resourse form.
     # See middlewares/form_validation.py for more information.
-    api_gateway_url = API_GATEWAY + "/courses"
+    api_gateway_url = API_GATEWAY + "/courses" + GATEWAY_KEY
     response = requests.get(api_gateway_url)
     list_course = response.json()
     
@@ -80,7 +81,7 @@ def process(auth_context, form):
     Output:
        Rendered HTML page.
     """
-    api_gateway_url = API_GATEWAY + "/courses"
+    api_gateway_url = API_GATEWAY + "/courses" + GATEWAY_KEY
     response = requests.get(api_gateway_url)
     list_course = response.json()
     
@@ -88,7 +89,7 @@ def process(auth_context, form):
         (course["course_id"], course["title"]) for course in list_course
     ]
 
-    api_gateway_url = API_GATEWAY + "/resources"
+    api_gateway_url = API_GATEWAY + "/resources" + GATEWAY_KEY
     upload_resource = resources.Resource(
         title=form.title.data,
         description=form.description.data,

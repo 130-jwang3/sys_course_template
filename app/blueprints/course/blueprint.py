@@ -27,6 +27,7 @@ from middlewares.auth import auth_required, auth_optional
 
 course_page = Blueprint("course_page", __name__)
 API_GATEWAY = "https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
+GATEWAY_KEY = "?key=AIzaSyB2PRCa87u1VsFXMw65lDgI03Y5HRFj9C4"
 
 @course_page.route("/")
 @auth_optional
@@ -40,11 +41,11 @@ def display(auth_context):
     Output:
         Rendered HTML page.
     """
-    api_gateway_url = API_GATEWAY + "/courses"
+    api_gateway_url = API_GATEWAY + "/courses" + GATEWAY_KEY
     response = requests.get(api_gateway_url)
     course_items = response.json()
     
-    api_gateway_url = API_GATEWAY + "/resources"
+    api_gateway_url = API_GATEWAY + "/resources" + GATEWAY_KEY
     response = requests.get(api_gateway_url)
     resource_items = response.json()
 
@@ -74,11 +75,11 @@ def display_specific(auth_context):
 
     if course_id:
         # Fetch course details based on course_id
-        api_gateway_url = API_GATEWAY + "/courses/" + course_id
+        api_gateway_url = API_GATEWAY + "/courses/" + course_id + GATEWAY_KEY
         response = requests.get(api_gateway_url)
         course = response.json()
         
-        api_gateway_url = API_GATEWAY + "/resources/course/" + course_id
+        api_gateway_url = API_GATEWAY + "/resources/course/" + course_id + GATEWAY_KEY
         response = requests.get(api_gateway_url)
         resource_list = response.json()
         return render_template(
