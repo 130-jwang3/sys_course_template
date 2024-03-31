@@ -21,13 +21,12 @@ import requests
 import os
 from flask import Blueprint, render_template, request
 
-from helpers import courses, resources
+from helpers import courses, resources, auth
 from middlewares.auth import auth_required, auth_optional
 
 
 resource_page = Blueprint("resource_page", __name__)
 API_GATEWAY = "https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
-GATEWAY_KEY = "?key=AIzaSyB2PRCa87u1VsFXMw65lDgI03Y5HRFj9C4"
 
 @resource_page.route('/resource', methods=['GET'])
 @auth_required
@@ -46,8 +45,16 @@ def display_specific(auth_context):
     
     if resource_id:
         # Fetch course details based on course_id
-        api_gateway_url = API_GATEWAY + "/resources/" + resource_id + API_GATEWAY
-        response = requests.get(api_gateway_url)
+        api_gateway_url = API_GATEWAY + "/resources/" + resource_id
+        jwt_cred = auth.generate_creds(
+            sa_keyfile="keyfile.json",
+            sa_email="api-gateway@syscourse-474.iam.gserviceaccount.com",
+            audience="https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
+        )
+        response = auth.make_authorized_get_request(
+            jwt_cred,
+            url=api_gateway_url,
+        )
         resource = response.json()
         return render_template('resource.html', resource=resource, auth_context=auth_context, bucket=resources.BUCKET)
     else:

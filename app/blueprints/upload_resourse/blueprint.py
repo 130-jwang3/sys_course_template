@@ -25,7 +25,7 @@ import requests
 
 from flask import Blueprint, redirect, render_template, url_for
 
-from helpers import resources, courses, eventing
+from helpers import resources, courses, eventing, auth
 from middlewares.auth import auth_required
 from middlewares.form_validation import (
     ResourceUploadForm,
@@ -34,7 +34,6 @@ from middlewares.form_validation import (
 
 PUBSUB_TOPIC_NEW_PRODUCT = os.environ.get("PUBSUB_TOPIC_NEW_PRODUCT")
 API_GATEWAY = "https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
-GATEWAY_KEY = "?key=AIzaSyB2PRCa87u1VsFXMw65lDgI03Y5HRFj9C4"
 
 upload_resource_page = Blueprint("upload_resource_page", __name__)
 
@@ -54,8 +53,16 @@ def display(auth_context):
 
     # Prepares the upload resourse form.
     # See middlewares/form_validation.py for more information.
-    api_gateway_url = API_GATEWAY + "/courses" + GATEWAY_KEY
-    response = requests.get(api_gateway_url)
+    api_gateway_url = API_GATEWAY + "/courses"
+    jwt_cred = auth.generate_creds(
+        sa_keyfile="keyfile.json",
+        sa_email="api-gateway@syscourse-474.iam.gserviceaccount.com",
+        audience="https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
+    )
+    response = auth.make_authorized_get_request(
+        jwt_cred,
+        url=api_gateway_url
+    )
     list_course = response.json()
     
     form = ResourceUploadForm()
@@ -81,15 +88,22 @@ def process(auth_context, form):
     Output:
        Rendered HTML page.
     """
-    api_gateway_url = API_GATEWAY + "/courses" + GATEWAY_KEY
-    response = requests.get(api_gateway_url)
+    api_gateway_url = API_GATEWAY + "/courses"
+    jwt_cred = auth.generate_creds(
+        sa_keyfile="keyfile.json",
+        sa_email="api-gateway@syscourse-474.iam.gserviceaccount.com",
+        audience="https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
+    )
+    response = auth.make_authorized_get_request(
+        jwt_cred,
+        url=api_gateway_url
+    )
     list_course = response.json()
     
     form.course_id.choices = [
         (course["course_id"], course["title"]) for course in list_course
     ]
 
-    api_gateway_url = API_GATEWAY + "/resources" + GATEWAY_KEY
     upload_resource = resources.Resource(
         title=form.title.data,
         description=form.description.data,
@@ -101,8 +115,14 @@ def process(auth_context, form):
         course_id=form.course_id.data,
     )
     new_upload_resource = asdict(upload_resource)
-    response = requests.post(api_gateway_url, json=new_upload_resource)
-
+    
+    api_gateway_url = API_GATEWAY + "/resources"
+    response = auth.make_authorized_post_request(
+        jwt_cred,
+        url=api_gateway_url,
+        data=new_upload_resource
+    )
+    
     if response.ok:
         email = auth_context.get('email')
         eventing.stream_event(

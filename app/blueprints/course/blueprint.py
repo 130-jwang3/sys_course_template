@@ -21,13 +21,12 @@ import requests
 
 from flask import Blueprint, render_template, request
 
-from helpers import courses, resources
+from helpers import courses, resources, auth
 from middlewares.auth import auth_required, auth_optional
 
 
 course_page = Blueprint("course_page", __name__)
 API_GATEWAY = "https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
-GATEWAY_KEY = "?key=AIzaSyB2PRCa87u1VsFXMw65lDgI03Y5HRFj9C4"
 
 @course_page.route("/")
 @auth_optional
@@ -41,12 +40,23 @@ def display(auth_context):
     Output:
         Rendered HTML page.
     """
-    api_gateway_url = API_GATEWAY + "/courses" + GATEWAY_KEY
-    response = requests.get(api_gateway_url)
+    jwt_cred = auth.generate_creds(
+        sa_keyfile="keyfile.json",
+        sa_email="api-gateway@syscourse-474.iam.gserviceaccount.com",
+        audience="https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
+    )
+    api_gateway_url = API_GATEWAY + "/courses"
+    response = auth.make_authorized_get_request(
+        jwt_cred,
+        url=api_gateway_url
+    )
     course_items = response.json()
     
-    api_gateway_url = API_GATEWAY + "/resources" + GATEWAY_KEY
-    response = requests.get(api_gateway_url)
+    api_gateway_url = API_GATEWAY + "/resources"
+    response = auth.make_authorized_get_request(
+        jwt_cred,
+        url=api_gateway_url
+    )
     resource_items = response.json()
 
     return render_template(
@@ -75,12 +85,23 @@ def display_specific(auth_context):
 
     if course_id:
         # Fetch course details based on course_id
-        api_gateway_url = API_GATEWAY + "/courses/" + course_id + GATEWAY_KEY
-        response = requests.get(api_gateway_url)
+        jwt_cred = auth.generate_creds(
+            sa_keyfile="keyfile.json",
+            sa_email="api-gateway@syscourse-474.iam.gserviceaccount.com",
+            audience="https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
+        )
+        api_gateway_url = API_GATEWAY + "/courses/" + course_id
+        response = auth.make_authorized_get_request(
+            jwt_cred,
+            url=api_gateway_url
+        )
         course = response.json()
         
-        api_gateway_url = API_GATEWAY + "/resources/course/" + course_id + GATEWAY_KEY
-        response = requests.get(api_gateway_url)
+        api_gateway_url = API_GATEWAY + "/resources/course/" + course_id
+        response = auth.make_authorized_get_request(
+            jwt_cred,
+            url=api_gateway_url
+        )
         resource_list = response.json()
         return render_template(
             "course.html",
