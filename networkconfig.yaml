@@ -1,0 +1,42 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-cloud-run-egress
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: sys-course
+  policyTypes:
+    - Egress
+  egress:
+    # Allow DNS resolution
+    - ports:
+        - protocol: UDP
+          port: 53
+    # Flask-app service IPs
+    - to:
+        - ipBlock:
+            cidr: 216.239.38.53/32
+        - ipBlock:
+            cidr: 216.239.34.53/32
+        - ipBlock:
+            cidr: 216.239.36.53/32
+        - ipBlock:
+            cidr: 216.239.32.53/32
+      ports:
+        - protocol: TCP
+          port: 443
+    # Course-helper service IPs
+    - to:
+        - ipBlock:
+            cidr: 216.239.34.53/32
+        - ipBlock:
+            cidr: 216.239.38.53/32
+        - ipBlock:
+            cidr: 216.239.32.53/32
+        - ipBlock:
+            cidr: 216.239.36.53/32
+      ports:
+        - protocol: TCP
+          port: 443

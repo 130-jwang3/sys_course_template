@@ -13,15 +13,21 @@
 # limitations under the License.
 
 
-# from .cart import cart_page
-# from .charge import charge_page
-# from .checkout import checkout_page
-# from .product_catalog import product_catalog_page
-from .add_course import add_course_page
-from .upload_resourse import upload_resource_page
-from .signin import signin_page
-from .course import course_page
-from .resource import resource_page
-from .allresource import all_resource_page
-from .get_course import all_course_page
-from .healthz import healthz_page
+"""
+This module is the Flask blueprint for the product catalog page (/).
+"""
+
+
+from flask import Blueprint, jsonify
+
+
+healthz_page = Blueprint('healthz_page', __name__)
+
+
+@healthz_page.route('/healthz')
+def health_check():
+    """
+    Health check endpoint.
+    Returns a simple HTTP 200 response to indicate the application is running.
+    """
+    return jsonify({"status": "ok"}), 200

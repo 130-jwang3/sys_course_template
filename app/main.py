@@ -39,7 +39,7 @@ firebase = firebase_admin.initialize_app()
 
 
 app = Flask(__name__)
-app.secret_key = b'A Super Secret Key'
+app.secret_key = b"A Super Secret Key"
 
 
 # app.register_blueprint(cart_page)
@@ -53,7 +53,7 @@ app.register_blueprint(resource_page)
 app.register_blueprint(signin_page)
 app.register_blueprint(all_resource_page)
 app.register_blueprint(all_course_page)
+app.register_blueprint(healthz_page)
 
-
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=False)
