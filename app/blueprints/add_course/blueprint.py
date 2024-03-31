@@ -23,9 +23,11 @@ import random
 
 from flask import Blueprint, redirect, render_template, url_for
 
-from helpers import resources, courses
+from helpers import resources, courses, eventing
 from middlewares.auth import auth_required
 from middlewares.form_validation import AddCourseForm, course_form_validation_required
+
+PUBSUB_TOPIC_NEW_PRODUCT = os.environ.get("PUBSUB_TOPIC_NEW_PRODUCT")
 
 add_course_page = Blueprint('add_course_page', __name__)
 
@@ -79,5 +81,16 @@ def process(auth_context, form):
     )
         
     course_id = courses.add_course(new_course)
+    
+    email = auth_context.get('email')
+    eventing.stream_event(
+        topic_name=PUBSUB_TOPIC_NEW_PRODUCT,
+        event_type='new-product-sub',
+        event_context={
+            'to': email,
+            'subject': 'Successfully Added Course to Syscourse',
+            'text': 'course uploaded to syscourse successfully.'
+        }
+    )
 
     return redirect(url_for('course_page.display'))

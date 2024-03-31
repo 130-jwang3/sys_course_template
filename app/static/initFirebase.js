@@ -22,13 +22,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebas
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "",
-    authDomain: "",
-    databaseURL: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: ""
+    apiKey: "AIzaSyCZlVwqADBWvsThPKPFIjaBYsUnTuUfRuQ",
+    authDomain: "syscourseproject.firebaseapp.com",
+    databaseURL: "https://syscourseproject-default-rtdb.firebaseio.com",
+    projectId: "syscourseproject",
+    storageBucket: "syscourseproject.appspot.com",
+    messagingSenderId: "1081274288955",
+    appId: "1:1081274288955:web:cbb17b5efaac0ae79ac51e"
 };
 
 
