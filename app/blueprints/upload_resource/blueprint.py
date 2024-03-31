@@ -20,8 +20,12 @@ This module is the Flask blueprint for the upload resource page (/upload_resourc
 
 import os
 import time
+import json
+import requests
 
-from flask import Blueprint, redirect, render_template, url_for
+from flask import Blueprint, redirect, render_template, url_for, request, current_app, flash
+from werkzeug.utils import secure_filename
+
 
 from helpers import resources, courses, eventing
 from middlewares.auth import auth_required
@@ -73,23 +77,46 @@ def process(auth_context, form):
     Output:
        Rendered HTML page.
     """
+    file = request.files.get('resourceFile')
+    if not file or file.filename == '':
+        # Flash message and redirect if no file is selected
+        flash('No file selected for uploading', 'error')
+        return redirect(url_for("upload_resource_page.display", _anchor='form'))
+    
+    # Continue processing since there is a file
+    filename = secure_filename(file.filename)
+    cloud_function_url = 'https://us-central1-YOUR-PROJECT-ID.cloudfunctions.net/upload_image'
+    files = {'filepond': (filename, file, file.content_type)}
+    
+    # Send the file to the Cloud Function
+    response = requests.post(cloud_function_url, files=files)
+    if response.status_code != 200:
+        # Flash message and redirect if cloud function fails
+        flash('Error uploading file', 'error')
+        return redirect(url_for("upload_resource_page.display", _anchor='form'))
+    
+    # If the request was successful, extract the response data
+    response_data = response.json()
+     
     form.course_id.choices = [
         (course.course_id, course.title) for course in courses.list_course()
     ]
-
+    
+    # Create the Resource object with the data from the response
     upload_resource = resources.Resource(
         title=form.title.data,
         description=form.description.data,
-        # url=form.resourceFile.data.filename,
-        url="resource_1",
-        # type=form.resourceFile.data.content_type,
-        type="png",
+        url=response_data.get('url'), # URL from the Cloud Function response
+        type=file.content_type,    # MIME type of the file
         uid=auth_context.get("uid"),
+        thumbnail="resource_1",
         course_id=form.course_id.data,
+        resource_id=response_data.get('resource_id')  # Resource ID from the response
     )
-
-    resource_id = resources.add_resource(upload_resource)
-
+    
+    # Add the resource to the database or wherever it needs to be stored
+    resources.add_resource(upload_resource)
+    
     # Publish an event to the topic for new products.
     # Cloud Function detect_labels subscribes to the topic and labels the
     # product using Cloud Vision API upon arrival of new events.
@@ -107,4 +134,5 @@ def process(auth_context, form):
         }
     )
 
+    # Redirect to the home page with a success message
     return redirect(url_for("course_page.display"))

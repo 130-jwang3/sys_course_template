@@ -11,7 +11,7 @@
     <article class="media">
       <figure class="media-left">
         <p class="image">
-          <img src="https://storage.cloud.google.com/{{bucket}}/{{ resource.url }}.png" onerror="this.src='https://storage.cloud.google.com/{{bucket}}/placeholder.png'" alt="Resource Thumbnail">
+          <img src="https://storage.cloud.google.com/{{bucket}}/{{ resource.thumbnail }}.png" onerror="this.src='https://storage.cloud.google.com/{{bucket}}/placeholder.png'" alt="Resource Thumbnail">
         </p>
       </figure>
       <div class="media-content">
@@ -23,6 +23,11 @@
             <br>
             <strong>Type:</strong> {{ resource.type }}
             <br>
+            {% if resource.type == 'application/pdf' %}
+            <a href="{{ resource.url }}" download="{{ resource.title }}.pdf" class="button is-link">Download PDF</a>
+            {% elif resource.type == 'image/png' %}
+            <a href="{{ resource.url }}" download="{{ resource.title }}.png" class="button is-link">Download PNG</a>
+            {% endif %}
           </p>
         </div>
       </div>

@@ -15,7 +15,6 @@
 
 runtime: python39
 
-
 env_variables:
   GCP_PROJECT: "SysCourseProject"
   GCP_PROJECT_ID: "yscourseproject"
@@ -24,11 +23,10 @@ env_variables:
   GCS_BUCKET: "s-c-image"
   FIREBASE_CONFIG: "firebase_config.json"
 
-
 handlers:
   - url: /static
     static_dir: static
- 
+  
   - url: /.*
     script: auto
     secure: always
