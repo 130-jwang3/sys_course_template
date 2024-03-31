@@ -23,7 +23,8 @@ env_variables:
   PUBSUB_TOPIC_PAYMENT_PROCESS: "payment-process"
   GCS_BUCKET: "syscourse-web"
   FIREBASE_CONFIG: "firebase_config.json"
-
+  API_GATEWAY_URL: "https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
+  JWT_EMAIL: "api-gateway@syscourse-474.iam.gserviceaccount.com"
 
 handlers:
   - url: /static

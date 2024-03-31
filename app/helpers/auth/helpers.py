@@ -56,7 +56,6 @@ def make_authorized_get_request(jwt_credentials, url):
     # Make authorized request
     authorized_session = AuthorizedSession(jwt_credentials)
     authorized_response = authorized_session.get(url)
-    print(f"INFO: Content from Response is: {authorized_response.content}")
     return authorized_response
   
 def make_authorized_post_request(jwt_credentials, url, data):
@@ -76,5 +75,4 @@ def make_authorized_post_request(jwt_credentials, url, data):
     # Make authorized request
     authorized_session = AuthorizedSession(jwt_credentials)
     authorized_response = authorized_session.post(url, headers=headers, json=data)
-    print(f"INFO: Content from Response is: {authorized_response.content}")
     return authorized_response

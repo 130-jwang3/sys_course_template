@@ -25,17 +25,17 @@ steps:
 - name: 'gcr.io/cloud-builders/gcs-fetcher'
   args:
   - '--type=Manifest'
-  - '--location=gs://${PROJECT_ID}-build/cloudbuild/gcsFetcherManifest.json'
+  - '--location=gs://syscourse-474-build/cloudbuild/gcsFetcherManifest.json'
 
 # Cloud Build Step #3: Deploy the App Engine app.
 - name: 'gcr.io/cloud-builders/gcloud'
   args: ['app', 'deploy', 'app/app.yaml']
 
-# # Cloud Build Step #4: Deploy the App Engine service for streaming events to
-# # Google BigQuery.
-# - name: 'gcr.io/cloud-builders/gcloud'
-#   args: ['app', 'deploy', 'extras/streamEventsApp/app.yaml']
+# Cloud Build Step #4: Deploy the App Engine service for streaming events to
+# Google BigQuery.
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['app', 'deploy', 'extras/streamEventsApp/app.yaml']
 
-#   # Cloud Build Step #5: Deploy the API gateway
-# - name: 'gcr.io/cloud-builders/gcloud'
-#   args: ['functions', 'deploy', 'sendEmail', '--source=./functions/email_with_sendgrid/', '--runtime=nodejs16', '--trigger-topic=notification']
+  # Cloud Build Step #5: Deploy the API gateway
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['functions', 'deploy', 'sendEmail', '--source=./functions/email_with_sendgrid/', '--runtime=nodejs16', '--trigger-topic=notification']

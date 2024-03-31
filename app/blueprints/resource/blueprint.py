@@ -26,7 +26,7 @@ from middlewares.auth import auth_required, auth_optional
 
 
 resource_page = Blueprint("resource_page", __name__)
-API_GATEWAY = "https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
+API_GATEWAY = os.environ.get('API_GATEWAY_URL')
 
 @resource_page.route('/resource', methods=['GET'])
 @auth_required
@@ -48,8 +48,8 @@ def display_specific(auth_context):
         api_gateway_url = API_GATEWAY + "/resources/" + resource_id
         jwt_cred = auth.generate_creds(
             sa_keyfile="keyfile.json",
-            sa_email="api-gateway@syscourse-474.iam.gserviceaccount.com",
-            audience="https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
+            sa_email=os.environ.get('JWT_EMAIL'),
+            audience=API_GATEWAY
         )
         response = auth.make_authorized_get_request(
             jwt_cred,

@@ -32,8 +32,8 @@ from middlewares.form_validation import (
     resource_form_validation_required,
 )
 
-PUBSUB_TOPIC_NEW_PRODUCT = os.environ.get("PUBSUB_TOPIC_NEW_PRODUCT")
-API_GATEWAY = "https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
+PUBSUB_TOPIC_NEW_PRODUCT = os.environ.get('PUBSUB_TOPIC_NEW_PRODUCT')
+API_GATEWAY = os.environ.get('API_GATEWAY_URL')
 
 upload_resource_page = Blueprint("upload_resource_page", __name__)
 
@@ -56,8 +56,8 @@ def display(auth_context):
     api_gateway_url = API_GATEWAY + "/courses"
     jwt_cred = auth.generate_creds(
         sa_keyfile="keyfile.json",
-        sa_email="api-gateway@syscourse-474.iam.gserviceaccount.com",
-        audience="https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
+        sa_email=os.environ.get('JWT_EMAIL'),
+        audience=API_GATEWAY
     )
     response = auth.make_authorized_get_request(
         jwt_cred,
@@ -91,8 +91,8 @@ def process(auth_context, form):
     api_gateway_url = API_GATEWAY + "/courses"
     jwt_cred = auth.generate_creds(
         sa_keyfile="keyfile.json",
-        sa_email="api-gateway@syscourse-474.iam.gserviceaccount.com",
-        audience="https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
+        sa_email=os.environ.get('JWT_EMAIL'),
+        audience=API_GATEWAY
     )
     response = auth.make_authorized_get_request(
         jwt_cred,
