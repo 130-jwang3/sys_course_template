@@ -11,15 +11,15 @@
     <link rel="stylesheet" href="/static/course_catalog.css" />
   </head>
 
-  <body>
-    <div class="container">
-      <h1 class="title">Resources</h1><br />
-
-      <div class="card-course-catalog-container">
-        {% for resource in resources %}
-          <div class="card-course-catalog">
-            <div class="card-course-catalog-image">
-              <img src="https://storage.cloud.google.com/{{ bucket }}/{{ resource.url }}.png" onerror="this.src='https://storage.cloud.google.com/{{ bucket }}/placeholder.png'" />
+<body>
+<div class="container">
+    <h1 class="title">Resources</h1><br>
+  
+  <div class="card-course-catalog-container">
+      {% for resource in resources %}
+      <div class="card-course-catalog">
+          <div class="card-course-catalog-image">
+                <img src="https://storage.cloud.google.com/{{ bucket }}/{{ resource.thumbnail }}.png" onerror="this.src='https://storage.cloud.google.com/{{bucket}}/placeholder.png'">
             </div>
             <div class="card-course-catalog-content">
               <h4 class="card-course-catalog-title">{{ resource.title }}</h4>

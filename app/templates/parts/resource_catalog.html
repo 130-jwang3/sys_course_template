@@ -22,7 +22,7 @@
         {% for resource in resources %}
             <div class="card-course-catalog">
                 <div class="card-course-catalog-image">
-                    <img src="https://storage.cloud.google.com/{{ bucket }}/{{ resource.url }}.png" onerror="this.src='https://storage.cloud.google.com/{{bucket}}/missing.png'">
+                    <img src="https://storage.cloud.google.com/{{ bucket }}/{{ resource.thumbnail }}.png" onerror="this.src='https://storage.cloud.google.com/{{bucket}}/placeholder.png'">
                 </div>
                 <div class="card-course-catalog-content">
                     <h4 class="card-course-catalog-title">{{ resource.title }}</h4>
