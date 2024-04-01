@@ -15,7 +15,7 @@
 // Script for configuring Stripe.js.
 // See https://stripe.com/docs for more information.
 
-var stripe = Stripe('YOUR-API-KEY');
+var stripe = Stripe('pk_test_51OsY1vL26tHnfc80QgnSX8cuVILm9PtMx0BB70XrpQ06J9jvr2j3mF19ppwRGtScaQ6NmgTQ8qSRQafz4zWH1kzf00eFD2jpRO');
 var elements = stripe.elements();
 var style = {
   base: {
@@ -34,7 +34,7 @@ var style = {
   }
 };
 
-var card = elements.create('card', {style: style});
+var card = elements.create('card', { style: style });
 card.mount('#card-element');
 
 card.addEventListener('change', function (event) {
@@ -46,7 +46,7 @@ card.addEventListener('change', function (event) {
   }
 });
 
-function stripePayButtonClicked () {
+function stripePayButtonClicked() {
   stripe.createToken(card).then(function (result) {
     if (result.error) {
       var errorElement = document.getElementById('card-errors');
@@ -57,7 +57,7 @@ function stripePayButtonClicked () {
   });
 }
 
-function stripeTokenHandler (token) {
+function stripeTokenHandler(token) {
   let addressA = document.getElementById('address_1_input').value;
   let addressB = document.getElementById('address_2_input').value;
   let city = document.getElementById('city_input').value;
@@ -68,7 +68,7 @@ function stripeTokenHandler (token) {
 
   if (!addressA || !city || !state || !zipCode || !email || !mobile) {
     return alert(`Some fields might be empty or incorrect. Please make ` +
-                 `sure that all the required fields have been completed correctly.`);
+      `sure that all the required fields have been completed correctly.`);
   }
 
   var paymentForm = document.getElementById('payment-form');

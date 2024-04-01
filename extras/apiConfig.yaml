@@ -195,6 +195,19 @@ paths:
         '404':
           description: Resource not found
 
+  /upload_image:
+    post:
+      summary: Upload an image
+      operationId: uploadImage
+      x-google-backend:
+        address: https://us-central1-syscourse-474.cloudfunctions.net/
+        path_translation: APPEND_PATH_TO_ADDRESS
+      security:
+      - jwt: []
+      responses:
+        '200':
+          description: Resource added successfully
+
 definitions:
   Course:
     type: object

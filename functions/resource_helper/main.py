@@ -19,6 +19,7 @@ class Resource:
     url: str
     description: str
     uid: str
+    thumbnail: str
     duration: Optional[int] = None
     document_id: Optional[str] = None
     resource_id: Optional[str] = None
@@ -33,6 +34,7 @@ class Resource:
             url=data.get("url"),
             description=data.get("description"),
             uid=data.get("uid"),
+            thumbnail=data.get("thumbnail"),
             duration=data.get("duration"),
             document_id=document.id,
             resource_id=document.id,

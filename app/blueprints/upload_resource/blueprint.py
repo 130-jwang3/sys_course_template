@@ -22,8 +22,12 @@ from dataclasses import asdict
 import os
 import time
 import requests
+import json
+import requests
 
-from flask import Blueprint, redirect, render_template, url_for
+from flask import Blueprint, redirect, render_template, url_for, request, current_app, flash
+from werkzeug.utils import secure_filename
+
 
 from helpers import resources, courses, eventing, auth
 from middlewares.auth import auth_required
@@ -88,12 +92,39 @@ def process(auth_context, form):
     Output:
        Rendered HTML page.
     """
-    api_gateway_url = API_GATEWAY + "/courses"
     jwt_cred = auth.generate_creds(
         sa_keyfile="keyfile.json",
         sa_email=os.environ.get('JWT_EMAIL'),
         audience=API_GATEWAY
     )
+    
+    file = request.files.get('resourceFile')
+    if not file or file.filename == '':
+        # Flash message and redirect if no file is selected
+        flash('No file selected for uploading', 'error')
+        return redirect(url_for("upload_resource_page.display", _anchor='form'))
+    
+    # Continue processing since there is a file
+    filename = secure_filename(file.filename)
+    files = {'filepond': (filename, file, file.content_type)}
+    
+    # Send the file to the Cloud Function
+    api_gateway_url = API_GATEWAY + "/upload_image"
+    response = auth.make_authorized_post_files_request(
+        jwt_cred,
+        url=api_gateway_url,
+        files=files
+    )
+    if response.status_code != 200:
+        # Flash message and redirect if cloud function fails
+        flash('Error uploading file', 'error')
+        return redirect(url_for("upload_resource_page.display", _anchor='form'))
+    
+    # If the request was successful, extract the response data
+    response_data = response.json()
+     
+    # get list of courses
+    api_gateway_url = API_GATEWAY + "/courses"
     response = auth.make_authorized_get_request(
         jwt_cred,
         url=api_gateway_url
@@ -103,17 +134,19 @@ def process(auth_context, form):
     form.course_id.choices = [
         (course["course_id"], course["title"]) for course in list_course
     ]
-
+    
+    # Create the Resource object with the data from the response
     upload_resource = resources.Resource(
         title=form.title.data,
         description=form.description.data,
-        # url=form.resourceFile.data.filename,
-        url="resource_1",
-        # type=form.resourceFile.data.content_type,
-        type="png",
+        url=response_data.get('url'), # URL from the Cloud Function response
+        type=file.content_type,    # MIME type of the file
         uid=auth_context.get("uid"),
+        thumbnail="resource_1",
         course_id=form.course_id.data,
+        resource_id=response_data.get('resource_id')  # Resource ID from the response
     )
+
     new_upload_resource = asdict(upload_resource)
     
     api_gateway_url = API_GATEWAY + "/resources"

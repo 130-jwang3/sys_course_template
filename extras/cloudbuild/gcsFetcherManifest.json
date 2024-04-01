@@ -15,12 +15,12 @@
         "sourceUrl": "gs://syscourse-474-build/cloudbuild/stripe.js",
         "sha1sum": ""
     },
-    "extras/cloudbuild/functions_env_vars.yaml": {
-        "sourceUrl": "gs://syscourse-474-build/cloudbuild/functions_env_vars.yaml",
-        "sha1sum": ""
-    },
     "extras/streamEventsApp/app.yaml":{
         "sourceUrl": "gs://syscourse-474-build/cloudbuild/app_stream_events.yaml",
+        "sha1sum": ""
+    },
+    "extras/cloudbuild/functions_env_vars.yaml": {
+        "sourceUrl": "gs://syscourse-474-build/cloudbuild/functions_env_vars.yaml",
         "sha1sum": ""
     }
 }

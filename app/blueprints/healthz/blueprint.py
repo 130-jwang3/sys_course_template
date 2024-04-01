@@ -13,4 +13,21 @@
 # limitations under the License.
 
 
-from .blueprint import upload_resource_page
+"""
+This module is the Flask blueprint for the product catalog page (/).
+"""
+
+
+from flask import Blueprint, jsonify
+
+
+healthz_page = Blueprint('healthz_page', __name__)
+
+
+@healthz_page.route('/healthz')
+def health_check():
+    """
+    Health check endpoint.
+    Returns a simple HTTP 200 response to indicate the application is running.
+    """
+    return jsonify({"status": "ok"}), 200

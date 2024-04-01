@@ -76,3 +76,22 @@ def make_authorized_post_request(jwt_credentials, url, data):
     authorized_session = AuthorizedSession(jwt_credentials)
     authorized_response = authorized_session.post(url, headers=headers, json=data)
     return authorized_response
+
+def make_authorized_post_files_request(jwt_credentials, url, files):
+    """
+    Makes an authorized POST request to the endpoint
+    :param jwt_credentials:     token
+    :param url:                 request URL
+    :param data:                request data (JSON)
+    """
+    headers = {
+        'Authorization': 'Bearer {}'.format(jwt_credentials),
+        'Access-Control-Allow-Origin': '*'
+    }
+    request = None
+    # Refresh the token
+    jwt_credentials.refresh(request)
+    # Make authorized request
+    authorized_session = AuthorizedSession(jwt_credentials)
+    authorized_response = authorized_session.post(url, headers=headers, files=files)
+    return authorized_response

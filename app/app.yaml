@@ -15,7 +15,6 @@
 
 runtime: python39
 
-
 env_variables:
   GCP_PROJECT: "syscourse-474"
   GCP_PROJECT_ID: "syscourse-474"
@@ -29,7 +28,7 @@ env_variables:
 handlers:
   - url: /static
     static_dir: static
- 
+  
   - url: /.*
     script: auto
     secure: always

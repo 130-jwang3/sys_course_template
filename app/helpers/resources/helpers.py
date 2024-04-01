@@ -83,6 +83,7 @@ def list_resources():
                 url=res.get('url'),
                 description=res.get('description'),
                 uid=res.get('uid'),
+                thumbnail=res.get('thumbnail'),
                 duration=res.get('duration'),
                 document_id=res.get('document_id'),
                 resource_id=res.get('resource_id')
@@ -115,6 +116,7 @@ def list_resources_by_course(course_id):
                 url=res.get('url'),
                 description=res.get('description'),
                 uid=res.get('uid'),
+                thumbnail=res.get('thumbnail'),
                 duration=res.get('duration'),
                 document_id=res.get('document_id'),
                 resource_id=res.get('resource_id')

@@ -47,12 +47,11 @@
           <textarea class="textarea" name="description" placeholder="Resource description" required></textarea>
         </div>
       </div>
-      <!-- FilePond input for file upload -->
-      <input type="file" class="filepond" name="resourceFile" accept="image/png, image/jpeg, application/pdf">
-      <!-- Display file name and type after upload -->
-      <div id="file-info">
-        <p>File Name: <span id="file-name"></span></p>
-        <p>File Type: <span id="file-type"></span></p>
+      <div class="field">
+        <div class="control">
+          <!-- FilePond input for file upload -->
+          <input type="file" class="filepond" name="resourceFile" accept="image/png, application/pdf">
+        </div>
       </div>
       <div class="field">
         <div class="control">
@@ -61,32 +60,37 @@
       </div>
     </form>
   </div>
-  <!-- Include your FilePond and other JS at the bottom of the page -->
-  <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
-  <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-  <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
-  <script>
-    // Initialize FilePond
-  FilePond.registerPlugin(
-    FilePondPluginImagePreview,
-    FilePondPluginFileValidateType
-  );
+{% endblock%}
+{% block script%}
+<script>
+  // Get the CSRF token from the hidden input field
+const csrfToken = document.querySelector('input[name="csrf_token"]').value;
 
-  const pond = FilePond.create(document.querySelector('.filepond'), {
-    acceptedFileTypes: ['image/png', 'image/jpeg', 'application/pdf']
-  });
+// Initialize FilePond
+FilePond.registerPlugin(
+  FilePondPluginImagePreview,
+  FilePondPluginFileValidateType
+);
 
-  // Listen for FilePond's addfile event and update file name and type
-  pond.on('addfile', (error, file) => {
-    if (error) {
-      console.error('File could not be added:', error);
-      return;
+// Create the FilePond instance
+const pond = FilePond.create(document.querySelector('.filepond'), {
+  acceptedFileTypes: ['image/png', 'application/pdf'],
+  server: {
+    process: {
+      url: '/upload_resource',
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': csrfToken
+      },
+      ondata: (formData) => {
+        // Append additional form data
+        formData.append('title', document.querySelector('input[name="title"]').value);
+        formData.append('description', document.querySelector('textarea[name="description"]').value);
+        formData.append('course_id', document.querySelector('select[name="course_id"]').value);
+        return formData;
+      }
     }
-
-    // Update the UI with the file name and type
-    document.getElementById('file-name').textContent = file.filename;
-    // Extract and set the file type, removing the "application/" prefix
-    document.getElementById('file-type').textContent = file.fileType ? file.fileType.split('/')[1] : '';
-  });
-  </script>
+  }
+});
+</script>
 {% endblock %}
