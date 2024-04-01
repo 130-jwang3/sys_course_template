@@ -10,9 +10,9 @@ securityDefinitions:
     authorizationUrl: ""
     flow: "implicit"
     type: "oauth2"
-    x-google-issuer: "api-gateway@syscourse-474.iam.gserviceaccount.com"
-    x-google-audiences: "https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
-    x-google-jwks_uri: "https://www.googleapis.com/robot/v1/metadata/x509/api-gateway@syscourse-474.iam.gserviceaccount.com"
+    x-google-issuer: "api-gateway@<APP_ID>.iam.gserviceaccount.com"
+    x-google-audiences: "<GATEWAY_URL>"
+    x-google-jwks_uri: "https://www.googleapis.com/robot/v1/metadata/x509/api-gateway@<APP_ID>.iam.gserviceaccount.com"
 
 paths:
   /courses:
@@ -20,7 +20,7 @@ paths:
       summary: Get all courses
       operationId: getCourses
       x-google-backend:
-        address: https://us-central1-syscourse-474.cloudfunctions.net/course_helper
+        address: https://us-central1-<APP_ID>.cloudfunctions.net/course_helper
         path_translation: APPEND_PATH_TO_ADDRESS
       security:
       - jwt: []
@@ -41,7 +41,7 @@ paths:
           schema:
             $ref: '#/definitions/Course'
       x-google-backend:
-        address: https://us-central1-syscourse-474.cloudfunctions.net/course_helper
+        address: https://us-central1-<APP_ID>.cloudfunctions.net/course_helper
         path_translation: APPEND_PATH_TO_ADDRESS
       security:
       - jwt: []
@@ -59,7 +59,7 @@ paths:
           required: true
           type: string
       x-google-backend:
-        address: https://us-central1-syscourse-474.cloudfunctions.net/course_helper
+        address: https://us-central1-<APP_ID>.cloudfunctions.net/course_helper
         path_translation: APPEND_PATH_TO_ADDRESS
       security:
       - jwt: []
@@ -85,7 +85,7 @@ paths:
           required: true
           type: string
       x-google-backend:
-        address: https://us-central1-syscourse-474.cloudfunctions.net/flask_app
+        address: https://us-central1-<APP_ID>.cloudfunctions.net/flask_app
         path_translation: APPEND_PATH_TO_ADDRESS
       security:
       - jwt: []
@@ -102,7 +102,7 @@ paths:
       summary: Get all resources
       operationId: getResources
       x-google-backend:
-        address: https://us-central1-syscourse-474.cloudfunctions.net/flask_app
+        address: https://us-central1-<APP_ID>.cloudfunctions.net/flask_app
         path_translation: APPEND_PATH_TO_ADDRESS
       security:
       - jwt: []
@@ -123,7 +123,7 @@ paths:
           schema:
             $ref: '#/definitions/Resource'
       x-google-backend:
-        address: https://us-central1-syscourse-474.cloudfunctions.net/flask_app
+        address: https://us-central1-<APP_ID>.cloudfunctions.net/flask_app
         path_translation: APPEND_PATH_TO_ADDRESS
       security:
       - jwt: []
@@ -141,7 +141,7 @@ paths:
           required: true
           type: string
       x-google-backend:
-        address: https://us-central1-syscourse-474.cloudfunctions.net/flask_app
+        address: https://us-central1-<APP_ID>.cloudfunctions.net/flask_app
         path_translation: APPEND_PATH_TO_ADDRESS
       security:
       - jwt: []
@@ -161,7 +161,7 @@ paths:
           required: true
           type: string
       x-google-backend:
-        address: https://us-central1-syscourse-474.cloudfunctions.net/flask_app
+        address: https://us-central1-<APP_ID>.cloudfunctions.net/flask_app
         path_translation: APPEND_PATH_TO_ADDRESS
       security:
       - jwt: []
@@ -181,7 +181,7 @@ paths:
           required: true
           type: string
       x-google-backend:
-        address: https://us-central1-syscourse-474.cloudfunctions.net/flask_app
+        address: https://us-central1-<APP_ID>.cloudfunctions.net/flask_app
         path_translation: APPEND_PATH_TO_ADDRESS
       security:
       - jwt: []
@@ -200,7 +200,7 @@ paths:
       summary: Upload an image
       operationId: uploadImage
       x-google-backend:
-        address: https://us-central1-syscourse-474.cloudfunctions.net/
+        address: https://us-central1-<APP_ID>.cloudfunctions.net/
         path_translation: APPEND_PATH_TO_ADDRESS
       security:
       - jwt: []
