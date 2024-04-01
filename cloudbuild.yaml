@@ -17,15 +17,15 @@
 
 steps:
 # Cloud Build Step #1: Clone source code from GitHub
-- name: 'gcr.io/cloud-builders/git'
-  args: ['clone', 'https://github.com/GoogleCloudPlatform/cloud-builders']
+# - name: 'gcr.io/cloud-builders/git'
+#   args: ['clone', 'https://github.com/GoogleCloudPlatform/cloud-builders']
 
-# Cloud Build Step #2: Replace placeholder configurations in the project with
-#                      Project specific ones from Google Cloud Storage.
-- name: 'gcr.io/cloud-builders/gcs-fetcher'
-  args:
-  - '--type=Manifest'
-  - '--location=gs://syscourse-474-build/cloudbuild/gcsFetcherManifest.json'
+# # Cloud Build Step #2: Replace placeholder configurations in the project with
+# #                      Project specific ones from Google Cloud Storage.
+# - name: 'gcr.io/cloud-builders/gcs-fetcher'
+#   args:
+#   - '--type=Manifest'
+#   - '--location=gs://syscourse-474-build/cloudbuild/gcsFetcherManifest.json'
 
 # Cloud Build Step #3: Deploy the App Engine app.
 - name: 'gcr.io/cloud-builders/gcloud'

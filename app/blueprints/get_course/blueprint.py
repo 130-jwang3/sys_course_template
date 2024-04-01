@@ -29,5 +29,5 @@ def display(auth_context):
         "all_course_page.html",
         courses=course_items,
         auth_context=auth_context,
-        bucket=courses.BUCKET,
+        bucket=os.environ.get('GCS_BUCKET'),
     )
