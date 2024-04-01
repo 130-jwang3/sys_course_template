@@ -33,13 +33,13 @@ steps:
 
 # Cloud Build Step #4: Deploy the App Engine service for streaming events to
 # Google BigQuery.
-# - name: 'gcr.io/cloud-builders/gcloud'
-#   args: ['app', 'deploy', 'extras/streamEventsApp/app.yaml']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['app', 'deploy', 'extras/streamEventsApp/app.yaml']
 
-#   # Cloud Build Step #5: Deploy the API gateway
-# - name: 'gcr.io/cloud-builders/gcloud'
-#   args: ['functions', 'deploy', 'sendEmail', '--source=./functions/email_with_sendgrid/', '--runtime=nodejs16', '--trigger-topic=notification']
+  # Cloud Build Step #5: Deploy the API gateway
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['functions', 'deploy', 'sendEmail', '--source=./functions/email_with_sendgrid/', '--runtime=nodejs16', '--trigger-topic=notification']
   
-# # Cloud Build Step #6: Deploy the Cloud Function for image/pdf upload
-# - name: 'gcr.io/cloud-builders/gcloud'
-#   args: ['functions', 'deploy', 'upload_image', '--source=./functions/upload_image/', '--runtime=python39', '--trigger-http', '--allow-unauthenticated']
+# Cloud Build Step #6: Deploy the Cloud Function for image/pdf upload
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['functions', 'deploy', 'upload_image', '--source=./functions/upload_image/', '--runtime=python39', '--trigger-http', '--allow-unauthenticated']

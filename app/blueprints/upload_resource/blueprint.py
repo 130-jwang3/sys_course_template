@@ -20,16 +20,13 @@ This module is the Flask blueprint for the upload resource page (/upload_resourc
 
 from dataclasses import asdict
 import os
-import time
-import requests
-import json
 import requests
 
 from flask import Blueprint, redirect, render_template, url_for, request, current_app, flash
 from werkzeug.utils import secure_filename
 
 
-from helpers import resources, courses, eventing, auth
+from helpers import eventing, auth
 from middlewares.auth import auth_required
 from middlewares.form_validation import (
     ResourceUploadForm,
