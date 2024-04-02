@@ -252,6 +252,8 @@ definitions:
         type: string
       uid:
         type: string
+      thumbnail:
+        type: string
       duration: 
         type: integer
       document_id: 
