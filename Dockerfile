@@ -8,8 +8,8 @@ ENV GCP_PROJECT="temp" \
     PUBSUB_TOPIC_PAYMENT_PROCESS="payment-process" \
     GCS_BUCKET="temp-image-111" \
     FIREBASE_CONFIG="firebase_config.json" \
-    API_GATEWAY_URL="https://syscourse-gateway-9pefoum1.uc.gateway.dev" \
-    JWT_EMAIL="api-gateway@temp-416704.iam.gserviceaccount.com"
+    API_GATEWAY_URL="" \
+    JWT_EMAIL=""
 
 # Set the working directory in the container
 WORKDIR /app

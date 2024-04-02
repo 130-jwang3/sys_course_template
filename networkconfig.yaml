@@ -17,7 +17,7 @@ spec:
     # Allow egress traffic to API gateway
     - to:
         - ipBlock:
-            cidr: 216.239.36.56/32
+            cidr: 
       ports:
         - protocol: TCP
           port: 443
