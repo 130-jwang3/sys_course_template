@@ -25,7 +25,7 @@ import requests
 
 from flask import Blueprint, redirect, render_template, url_for
 
-from helpers import eventing, auth
+from helpers import eventing, auth, courses
 from middlewares.auth import auth_required
 from middlewares.form_validation import AddCourseForm, course_form_validation_required
 
