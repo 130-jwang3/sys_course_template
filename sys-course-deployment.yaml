@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: sys-course-container
-        image: gcr.io/temp-416704/sys-course-image:v3.2
+        image: gcr.io/temp-416704/sys-course-image:v3.9
         ports:
         - containerPort: 5000
         env:

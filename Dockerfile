@@ -7,7 +7,9 @@ ENV GCP_PROJECT="temp" \
     PUBSUB_TOPIC_NEW_PRODUCT="new-product" \
     PUBSUB_TOPIC_PAYMENT_PROCESS="payment-process" \
     GCS_BUCKET="temp-image-111" \
-    FIREBASE_CONFIG="firebase_config.json"
+    FIREBASE_CONFIG="firebase_config.json" \
+    API_GATEWAY_URL="https://syscourse-gateway-9pefoum1.uc.gateway.dev" \
+    JWT_EMAIL="api-gateway@temp-416704.iam.gserviceaccount.com"
 
 # Set the working directory in the container
 WORKDIR /app
@@ -17,7 +19,7 @@ COPY app/ .
 
 # Install any dependencies
 COPY app/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt gunicorn
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose port 80 to the outside world
 EXPOSE 5000

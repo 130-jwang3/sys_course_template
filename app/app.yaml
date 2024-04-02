@@ -16,14 +16,14 @@
 runtime: python39
 
 env_variables:
-  GCP_PROJECT: "syscourse-474"
-  GCP_PROJECT_ID: "syscourse-474"
+  GCP_PROJECT: "temp"
+  GCP_PROJECT_ID: "temp-416704"
   PUBSUB_TOPIC_NEW_PRODUCT: "new-product"
   PUBSUB_TOPIC_PAYMENT_PROCESS: "payment-process"
-  GCS_BUCKET: "syscourse-web"
+  GCS_BUCKET: "temp-image-111"
   FIREBASE_CONFIG: "firebase_config.json"
-  API_GATEWAY_URL: "https://syscourse-gateway-4tq1q35x.uc.gateway.dev"
-  JWT_EMAIL: "api-gateway@syscourse-474.iam.gserviceaccount.com"
+  API_GATEWAY_URL: "https://syscourse-gateway-9pefoum1.uc.gateway.dev"
+  JWT_EMAIL: "api-gateway@temp-416704.iam.gserviceaccount.com"
 
 handlers:
   - url: /static

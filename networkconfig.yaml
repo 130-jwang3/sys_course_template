@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-cloud-run-egress
+  name: allow-api-gateway-egress
   namespace: default
 spec:
   podSelector:
@@ -14,29 +14,10 @@ spec:
     - ports:
         - protocol: UDP
           port: 53
-    # Flask-app service IPs
+    # Allow egress traffic to API gateway
     - to:
         - ipBlock:
-            cidr: 216.239.38.53/32
-        - ipBlock:
-            cidr: 216.239.34.53/32
-        - ipBlock:
-            cidr: 216.239.36.53/32
-        - ipBlock:
-            cidr: 216.239.32.53/32
-      ports:
-        - protocol: TCP
-          port: 443
-    # Course-helper service IPs
-    - to:
-        - ipBlock:
-            cidr: 216.239.34.53/32
-        - ipBlock:
-            cidr: 216.239.38.53/32
-        - ipBlock:
-            cidr: 216.239.32.53/32
-        - ipBlock:
-            cidr: 216.239.36.53/32
+            cidr: 216.239.36.56/32
       ports:
         - protocol: TCP
           port: 443

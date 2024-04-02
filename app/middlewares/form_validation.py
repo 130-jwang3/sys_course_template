@@ -24,8 +24,15 @@ from flask_wtf import FlaskForm
 from wtforms import FieldList, FloatField, StringField, SelectField, TextAreaField, FileField
 from wtforms.validators import DataRequired, NumberRange, Optional
 from flask_wtf.file import FileAllowed
-from helpers import courses
+from helpers import courses, auth
 from flask import flash
+import logging
+import os
+
+# Create a logger instance
+logger = logging.getLogger(__name__)
+
+API_GATEWAY = os.environ.get('API_GATEWAY_URL')
 
 class AddCourseForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
@@ -64,10 +71,23 @@ def resource_form_validation_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         resource_upload_form = ResourceUploadForm()
+        
+        jwt_cred = auth.generate_creds(
+            sa_keyfile="keyfile.json",
+            sa_email=os.environ.get('JWT_EMAIL'),
+            audience=API_GATEWAY
+        )
+        api_gateway_url = API_GATEWAY + "/courses"
+        response = auth.make_authorized_get_request(
+            jwt_cred,
+            url=api_gateway_url
+        )
+        course_items = response.json()
 
-        resource_upload_form.course_id.choices = [(course.course_id, course.title) for course in courses.list_course()]
+        resource_upload_form.course_id.choices = [(course['course_id'], course['title']) for course in course_items]
 
         if not resource_upload_form.validate():
+            logger.error("Form validation failed: %s", resource_upload_form.errors)
             # Handling for validation failure
             return 'Something does not look right. Check your input and try again.', 400
 

@@ -21,7 +21,7 @@ import requests
 import os
 from flask import Blueprint, render_template, request
 
-from helpers import auth
+from helpers import auth, resources
 from middlewares.auth import auth_required, auth_optional
 
 

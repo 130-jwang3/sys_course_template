@@ -26,7 +26,7 @@ from flask import Blueprint, redirect, render_template, url_for, request, curren
 from werkzeug.utils import secure_filename
 
 
-from helpers import eventing, auth
+from helpers import eventing, auth, resources
 from middlewares.auth import auth_required
 from middlewares.form_validation import (
     ResourceUploadForm,
