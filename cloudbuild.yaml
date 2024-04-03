@@ -38,7 +38,7 @@ steps:
 
   # Cloud Build Step #5: Deploy the API gateway
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['functions', 'deploy', 'sendEmail', '--source=./functions/email_with_sendgrid/', '--runtime=nodejs16', '--trigger-topic=notification']
+  args: ['functions', 'deploy', 'sendEmail', '--source=./functions/email_with_sendgrid/', '--runtime=nodejs20', '--trigger-topic=notification']
   
 # Cloud Build Step #6: Deploy the Cloud Function for image/pdf upload
 - name: 'gcr.io/cloud-builders/gcloud'
